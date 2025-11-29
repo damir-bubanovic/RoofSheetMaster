@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RoofSheetMaster.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d7bdcba74cb220d8ecb76d6eb056bcad9ea9b363")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3e9bdffee59ca73d5af0a0453b047696fe3f03d9")]
 [assembly: System.Reflection.AssemblyProductAttribute("RoofSheetMaster.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RoofSheetMaster.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
