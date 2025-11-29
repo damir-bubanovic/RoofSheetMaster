@@ -140,5 +140,28 @@ class Program
         {
             Console.WriteLine($"{p.Face} - Panel {p.Index}: cover = {p.EffectiveWidth:F3}, length = {p.SheetLength:F3}");
         }
+
+        Console.WriteLine();
+        Console.WriteLine("=== Tapered Face (run changes along eave) ===");
+
+        var tapered = new TaperedRoofFace
+        {
+            Name = "HipSide",
+            RoofLength = 40.0,
+            StartRun = 15.0,   // longer run at one end
+            EndRun = 5.0,      // shorter run at the other end (near hip/valley)
+            RoofAngleDegrees = 26.565,
+            SheetWidth = 3.0,
+            SheetOverlap = 0.125,
+            RidgeGap = 0.0
+        };
+
+        var taperedResult = RoofCalculator.CalculateTaperedFace(tapered);
+        Console.WriteLine($"Total sheets ({tapered.Name}): {taperedResult.TotalSheets}");
+        foreach (var p in taperedResult.Panels)
+        {
+            Console.WriteLine(
+                $"{p.Face} - Panel {p.Index}: eavePos = {p.EavePosition:F3}, length = {p.SheetLength:F3}");
+        }
     }
 }
