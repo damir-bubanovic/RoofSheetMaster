@@ -1,0 +1,12 @@
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/bin/Debug/net8.0/RoofSheetMaster.Core.deps.json
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/bin/Debug/net8.0/RoofSheetMaster.Core.dll
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/bin/Debug/net8.0/RoofSheetMaster.Core.pdb
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/obj/Debug/net8.0/RoofSheetMaster.Core.GeneratedMSBuildEditorConfig.editorconfig
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/obj/Debug/net8.0/RoofSheetMaster.Core.AssemblyInfoInputs.cache
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/obj/Debug/net8.0/RoofSheetMaster.Core.AssemblyInfo.cs
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/obj/Debug/net8.0/RoofSheetMaster.Core.csproj.CoreCompileInputs.cache
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/obj/Debug/net8.0/RoofSheetMaster.Core.sourcelink.json
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/obj/Debug/net8.0/RoofSheetMaster.Core.dll
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/obj/Debug/net8.0/refint/RoofSheetMaster.Core.dll
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/obj/Debug/net8.0/RoofSheetMaster.Core.pdb
+/home/devilmaycry/Software/RoofSheetMaster/RoofSheetMaster.Core/obj/Debug/net8.0/ref/RoofSheetMaster.Core.dll

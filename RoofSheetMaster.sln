@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoofSheetMaster.Core", "RoofSheetMaster.Core\RoofSheetMaster.Core.csproj", "{C3315335-C321-4500-85D1-490A0148ED07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoofSheetMaster.Cli", "RoofSheetMaster.Cli\RoofSheetMaster.Cli.csproj", "{9AD9969C-F1FA-45E6-8A7A-D05BC4CFCD51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{C3315335-C321-4500-85D1-490A0148ED07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3315335-C321-4500-85D1-490A0148ED07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3315335-C321-4500-85D1-490A0148ED07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AD9969C-F1FA-45E6-8A7A-D05BC4CFCD51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AD9969C-F1FA-45E6-8A7A-D05BC4CFCD51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AD9969C-F1FA-45E6-8A7A-D05BC4CFCD51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AD9969C-F1FA-45E6-8A7A-D05BC4CFCD51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
