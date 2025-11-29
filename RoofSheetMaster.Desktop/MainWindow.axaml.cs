@@ -29,16 +29,6 @@ public partial class MainWindow : Window
             if (!double.TryParse(RidgeGapTextBox.Text, out var ridgeGap))
                 throw new Exception("Invalid ridge gap.");
 
-            var input = new RoofInput
-            {
-                RoofLength = roofLength,
-                RoofWidth = roofWidth,
-                RoofAngleDegrees = roofAngle,
-                SheetWidth = sheetWidth,
-                SheetOverlap = sheetOverlap,
-                RidgeGap = ridgeGap
-            };
-
             var roofTypeIndex = RoofTypeComboBox.SelectedIndex;
 
             MaterialList materials;
@@ -47,14 +37,84 @@ public partial class MainWindow : Window
             if (roofTypeIndex == 0)
             {
                 // Single face
+                var input = new RoofInput
+                {
+                    RoofLength = roofLength,
+                    RoofWidth = roofWidth,
+                    RoofAngleDegrees = roofAngle,
+                    SheetWidth = sheetWidth,
+                    SheetOverlap = sheetOverlap,
+                    RidgeGap = ridgeGap
+                };
+
                 materials = RoofCalculator.CalculateSimpleFace(input);
                 summarySuffix = "(single face)";
             }
-            else
+            else if (roofTypeIndex == 1)
             {
                 // Gable roof (two faces, same dimensions)
+                var input = new RoofInput
+                {
+                    RoofLength = roofLength,
+                    RoofWidth = roofWidth,
+                    RoofAngleDegrees = roofAngle,
+                    SheetWidth = sheetWidth,
+                    SheetOverlap = sheetOverlap,
+                    RidgeGap = ridgeGap
+                };
+
                 materials = RoofCalculator.CalculateGableRoof(input);
                 summarySuffix = "(gable, both faces)";
+            }
+            else
+            {
+                // Hip roof (4 faces, same dimensions for now)
+                var hipRoof = new HipRoof
+                {
+                    FrontLeft = new RoofFace
+                    {
+                        Name = "FrontLeft",
+                        RoofLength = roofLength,
+                        RoofWidth = roofWidth,
+                        RoofAngleDegrees = roofAngle,
+                        SheetWidth = sheetWidth,
+                        SheetOverlap = sheetOverlap,
+                        RidgeGap = ridgeGap
+                    },
+                    FrontRight = new RoofFace
+                    {
+                        Name = "FrontRight",
+                        RoofLength = roofLength,
+                        RoofWidth = roofWidth,
+                        RoofAngleDegrees = roofAngle,
+                        SheetWidth = sheetWidth,
+                        SheetOverlap = sheetOverlap,
+                        RidgeGap = ridgeGap
+                    },
+                    BackLeft = new RoofFace
+                    {
+                        Name = "BackLeft",
+                        RoofLength = roofLength,
+                        RoofWidth = roofWidth,
+                        RoofAngleDegrees = roofAngle,
+                        SheetWidth = sheetWidth,
+                        SheetOverlap = sheetOverlap,
+                        RidgeGap = ridgeGap
+                    },
+                    BackRight = new RoofFace
+                    {
+                        Name = "BackRight",
+                        RoofLength = roofLength,
+                        RoofWidth = roofWidth,
+                        RoofAngleDegrees = roofAngle,
+                        SheetWidth = sheetWidth,
+                        SheetOverlap = sheetOverlap,
+                        RidgeGap = ridgeGap
+                    }
+                };
+
+                materials = RoofCalculator.CalculateHipRoof(hipRoof);
+                summarySuffix = "(hip, 4 faces same for now)";
             }
 
             ResultSummaryTextBlock.Text =

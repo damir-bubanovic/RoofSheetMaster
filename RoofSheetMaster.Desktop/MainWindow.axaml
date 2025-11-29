@@ -3,7 +3,7 @@
         xmlns:core="clr-namespace:RoofSheetMaster.Core;assembly=RoofSheetMaster.Core"
         x:Class="RoofSheetMaster.Desktop.MainWindow"
         Width="800" Height="600"
-        Title="RoofSheetMaster - Simple Face / Gable">
+        Title="RoofSheetMaster - Single / Gable / Hip">
 
   <Grid RowDefinitions="Auto,*">
     <!-- Input area -->
@@ -13,6 +13,7 @@
       <ComboBox x:Name="RoofTypeComboBox" Width="150" SelectedIndex="0">
         <ComboBoxItem Content="Single face" />
         <ComboBoxItem Content="Gable roof" />
+        <ComboBoxItem Content="Hip roof (4 faces same)" />
       </ComboBox>
 
       <TextBlock Text="Roof length (along eave)" Margin="0,8,0,0" />
@@ -51,7 +52,7 @@
       <ListBox.ItemTemplate>
         <DataTemplate x:DataType="core:Panel">
           <TextBlock>
-            <!-- Face (only set for gable) -->
+            <!-- Face name (for gable/hip) -->
             <Run Text="{Binding Face}"/>
             <Run Text=" " />
             <Run Text="Panel "/>

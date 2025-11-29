@@ -4,23 +4,30 @@ namespace RoofSheetMaster.Core;
 
 public static class RoofCalculator
 {
-    // Simple one-slope, rectangular roof face
-    public static MaterialList CalculateSimpleFace(RoofInput input)
+    // Core calculation used for any single planar face
+    private static MaterialList CalculateFaceInternal(
+        double roofLength,
+        double roofWidth,
+        double roofAngleDegrees,
+        double sheetWidth,
+        double sheetOverlap,
+        double ridgeGap,
+        string? faceName)
     {
-        if (input.SheetWidth <= 0)
+        if (sheetWidth <= 0)
             throw new ArgumentException("SheetWidth must be > 0");
-        if (input.RoofLength <= 0)
+        if (roofLength <= 0)
             throw new ArgumentException("RoofLength must be > 0");
 
-        var coverage = input.SheetWidth - input.SheetOverlap;
+        var coverage = sheetWidth - sheetOverlap;
         if (coverage <= 0)
             throw new ArgumentException("Sheet overlap cannot be >= sheet width");
 
-        var sheetCount = (int)Math.Ceiling(input.RoofLength / coverage);
+        var sheetCount = (int)Math.Ceiling(roofLength / coverage);
 
-        var horizRun = Math.Max(0, input.RoofWidth - input.RidgeGap);
+        var horizRun = Math.Max(0, roofWidth - ridgeGap);
 
-        var angleRad = input.RoofAngleDegrees * Math.PI / 180.0;
+        var angleRad = roofAngleDegrees * Math.PI / 180.0;
 
         var sheetLength = horizRun / Math.Cos(angleRad);
 
@@ -33,11 +40,37 @@ public static class RoofCalculator
                 Index = i + 1,
                 EffectiveWidth = coverage,
                 SheetLength = sheetLength,
-                Face = null // single face, not labeled yet
+                Face = faceName
             });
         }
 
         return result;
+    }
+
+    // Existing API: simple face using RoofInput
+    public static MaterialList CalculateSimpleFace(RoofInput input)
+    {
+        return CalculateFaceInternal(
+            input.RoofLength,
+            input.RoofWidth,
+            input.RoofAngleDegrees,
+            input.SheetWidth,
+            input.SheetOverlap,
+            input.RidgeGap,
+            null);
+    }
+
+    // New: simple face using RoofFace
+    public static MaterialList CalculateFace(RoofFace face)
+    {
+        return CalculateFaceInternal(
+            face.RoofLength,
+            face.RoofWidth,
+            face.RoofAngleDegrees,
+            face.SheetWidth,
+            face.SheetOverlap,
+            face.RidgeGap,
+            face.Name);
     }
 
     // Gable roof: two faces. If faceB is null, we assume it is the same as faceA.
@@ -53,19 +86,50 @@ public static class RoofCalculator
             RidgeGap = faceA.RidgeGap
         };
 
-        var materialsA = CalculateSimpleFace(faceA);
-        var materialsB = CalculateSimpleFace(inputB);
+        var materialsA = CalculateFaceInternal(
+            faceA.RoofLength,
+            faceA.RoofWidth,
+            faceA.RoofAngleDegrees,
+            faceA.SheetWidth,
+            faceA.SheetOverlap,
+            faceA.RidgeGap,
+            "Face A");
 
-        foreach (var p in materialsA.Panels)
-            p.Face = "Face A";
-
-        foreach (var p in materialsB.Panels)
-            p.Face = "Face B";
+        var materialsB = CalculateFaceInternal(
+            inputB.RoofLength,
+            inputB.RoofWidth,
+            inputB.RoofAngleDegrees,
+            inputB.SheetWidth,
+            inputB.SheetOverlap,
+            inputB.RidgeGap,
+            "Face B");
 
         var combined = new MaterialList();
         combined.Panels.AddRange(materialsA.Panels);
         combined.Panels.AddRange(materialsB.Panels);
 
         return combined;
+    }
+
+    // Hip roof: sum panels from up to four faces
+    public static MaterialList CalculateHipRoof(HipRoof roof)
+    {
+        var result = new MaterialList();
+
+        void AddFace(RoofFace? face)
+        {
+            if (face == null)
+                return;
+
+            var faceMaterials = CalculateFace(face);
+            result.Panels.AddRange(faceMaterials.Panels);
+        }
+
+        AddFace(roof.FrontLeft);
+        AddFace(roof.FrontRight);
+        AddFace(roof.BackLeft);
+        AddFace(roof.BackRight);
+
+        return result;
     }
 }
