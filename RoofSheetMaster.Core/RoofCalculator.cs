@@ -132,4 +132,29 @@ public static class RoofCalculator
 
         return result;
     }
+
+
+
+    // Valley roof: sum panels from two faces
+    public static MaterialList CalculateValleyRoof(ValleyRoof roof)
+    {
+        var result = new MaterialList();
+
+        void AddFace(RoofFace? face)
+        {
+            if (face == null)
+                return;
+
+            var faceMaterials = CalculateFace(face);
+            result.Panels.AddRange(faceMaterials.Panels);
+        }
+
+        AddFace(roof.UpperFace);
+        AddFace(roof.LowerFace);
+
+        return result;
+    }
+
+
+
 }

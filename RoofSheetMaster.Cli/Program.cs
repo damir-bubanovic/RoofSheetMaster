@@ -102,8 +102,41 @@ class Program
 
         var hipResult = RoofCalculator.CalculateHipRoof(hipRoof);
         Console.WriteLine($"Total sheets (hip roof): {hipResult.TotalSheets}");
-
         foreach (var p in hipResult.Panels)
+        {
+            Console.WriteLine($"{p.Face} - Panel {p.Index}: cover = {p.EffectiveWidth:F3}, length = {p.SheetLength:F3}");
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("=== Valley Roof (2 faces, same dimensions for now) ===");
+
+        var valleyRoof = new ValleyRoof
+        {
+            UpperFace = new RoofFace
+            {
+                Name = "Upper",
+                RoofLength = 40.0,
+                RoofWidth = 15.0,
+                RoofAngleDegrees = 26.565,
+                SheetWidth = 3.0,
+                SheetOverlap = 0.125,
+                RidgeGap = 0.0
+            },
+            LowerFace = new RoofFace
+            {
+                Name = "Lower",
+                RoofLength = 40.0,
+                RoofWidth = 15.0,
+                RoofAngleDegrees = 26.565,
+                SheetWidth = 3.0,
+                SheetOverlap = 0.125,
+                RidgeGap = 0.0
+            }
+        };
+
+        var valleyResult = RoofCalculator.CalculateValleyRoof(valleyRoof);
+        Console.WriteLine($"Total sheets (valley roof): {valleyResult.TotalSheets}");
+        foreach (var p in valleyResult.Panels)
         {
             Console.WriteLine($"{p.Face} - Panel {p.Index}: cover = {p.EffectiveWidth:F3}, length = {p.SheetLength:F3}");
         }

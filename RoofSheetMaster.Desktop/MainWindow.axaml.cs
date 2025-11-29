@@ -66,7 +66,7 @@ public partial class MainWindow : Window
                 materials = RoofCalculator.CalculateGableRoof(input);
                 summarySuffix = "(gable, both faces)";
             }
-            else
+            else if (roofTypeIndex == 2)
             {
                 // Hip roof (4 faces, same dimensions for now)
                 var hipRoof = new HipRoof
@@ -115,6 +115,36 @@ public partial class MainWindow : Window
 
                 materials = RoofCalculator.CalculateHipRoof(hipRoof);
                 summarySuffix = "(hip, 4 faces same for now)";
+            }
+            else
+            {
+                // Valley roof (2 faces, same dimensions for now)
+                var valleyRoof = new ValleyRoof
+                {
+                    UpperFace = new RoofFace
+                    {
+                        Name = "Upper",
+                        RoofLength = roofLength,
+                        RoofWidth = roofWidth,
+                        RoofAngleDegrees = roofAngle,
+                        SheetWidth = sheetWidth,
+                        SheetOverlap = sheetOverlap,
+                        RidgeGap = ridgeGap
+                    },
+                    LowerFace = new RoofFace
+                    {
+                        Name = "Lower",
+                        RoofLength = roofLength,
+                        RoofWidth = roofWidth,
+                        RoofAngleDegrees = roofAngle,
+                        SheetWidth = sheetWidth,
+                        SheetOverlap = sheetOverlap,
+                        RidgeGap = ridgeGap
+                    }
+                };
+
+                materials = RoofCalculator.CalculateValleyRoof(valleyRoof);
+                summarySuffix = "(valley, 2 faces same for now)";
             }
 
             ResultSummaryTextBlock.Text =

@@ -14,6 +14,7 @@
         <ComboBoxItem Content="Single face" />
         <ComboBoxItem Content="Gable roof" />
         <ComboBoxItem Content="Hip roof (4 faces same)" />
+        <ComboBoxItem Content="Valley roof (2 faces same)" />
       </ComboBox>
 
       <TextBlock Text="Roof length (along eave)" Margin="0,8,0,0" />
