@@ -16,7 +16,6 @@ public partial class MainWindow : Window
     {
         try
         {
-            // Parse input values from text boxes
             if (!double.TryParse(RoofLengthTextBox.Text, out var roofLength))
                 throw new Exception("Invalid roof length.");
             if (!double.TryParse(RoofWidthTextBox.Text, out var roofWidth))
@@ -40,9 +39,26 @@ public partial class MainWindow : Window
                 RidgeGap = ridgeGap
             };
 
-            var materials = RoofCalculator.CalculateSimpleFace(input);
+            var roofTypeIndex = RoofTypeComboBox.SelectedIndex;
 
-            ResultSummaryTextBlock.Text = $"Total sheets: {materials.TotalSheets}";
+            MaterialList materials;
+            string summarySuffix;
+
+            if (roofTypeIndex == 0)
+            {
+                // Single face
+                materials = RoofCalculator.CalculateSimpleFace(input);
+                summarySuffix = "(single face)";
+            }
+            else
+            {
+                // Gable roof (two faces, same dimensions)
+                materials = RoofCalculator.CalculateGableRoof(input);
+                summarySuffix = "(gable, both faces)";
+            }
+
+            ResultSummaryTextBlock.Text =
+                $"Total sheets: {materials.TotalSheets} {summarySuffix}";
             PanelListBox.ItemsSource = materials.Panels;
         }
         catch (Exception ex)

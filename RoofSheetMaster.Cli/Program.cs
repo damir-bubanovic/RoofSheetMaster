@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿﻿﻿using System;
 using RoofSheetMaster.Core;
 
 class Program
@@ -15,12 +15,21 @@ class Program
             RidgeGap = 0.0
         };
 
-        var materials = RoofCalculator.CalculateSimpleFace(input);
-
-        Console.WriteLine($"Total sheets: {materials.TotalSheets}");
-        foreach (var p in materials.Panels)
+        Console.WriteLine("=== Single Face ===");
+        var singleFace = RoofCalculator.CalculateSimpleFace(input);
+        Console.WriteLine($"Total sheets (single face): {singleFace.TotalSheets}");
+        foreach (var p in singleFace.Panels)
         {
             Console.WriteLine($"Panel {p.Index}: cover = {p.EffectiveWidth:F3}, length = {p.SheetLength:F3}");
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("=== Gable Roof (two faces, same dimensions) ===");
+        var gable = RoofCalculator.CalculateGableRoof(input);
+        Console.WriteLine($"Total sheets (gable): {gable.TotalSheets}");
+        foreach (var p in gable.Panels)
+        {
+            Console.WriteLine($"{p.Face} - Panel {p.Index}: cover = {p.EffectiveWidth:F3}, length = {p.SheetLength:F3}");
         }
     }
 }
