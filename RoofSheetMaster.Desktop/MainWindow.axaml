@@ -2,113 +2,178 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:core="clr-namespace:RoofSheetMaster.Core;assembly=RoofSheetMaster.Core"
         x:Class="RoofSheetMaster.Desktop.MainWindow"
-        Width="900" Height="600"
+        Width="1200" Height="700"
         Title="RoofSheetMaster - Single / Gable / Hip / Valley">
 
-  <Grid RowDefinitions="Auto,*">
-    <!-- Input area -->
-    <Border Margin="10" Padding="10" BorderThickness="1">
-      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-        <!-- Row 0: Roof type -->
-        <TextBlock Grid.Row="0" Grid.Column="0"
-                   Text="Roof type" VerticalAlignment="Center" Margin="0,0,5,0"/>
-        <ComboBox x:Name="RoofTypeComboBox"
-                  Grid.Row="0" Grid.Column="1"
-                  Width="220"
-                  SelectedIndex="0">
-          <ComboBoxItem Content="Single face" />
-          <ComboBoxItem Content="Gable roof" />
-          <ComboBoxItem Content="Hip roof (4 faces same)" />
-          <ComboBoxItem Content="Valley roof (2 faces same)" />
-        </ComboBox>
+  <Grid Margin="4" ColumnDefinitions="420,*" RowDefinitions="*">
 
-        <!-- Row 1: Roof length -->
-        <TextBlock Grid.Row="1" Grid.Column="0"
-                   Text="Roof length (along eave)" Margin="0,5,5,0" />
-        <TextBox x:Name="RoofLengthTextBox"
-                 Grid.Row="1" Grid.Column="1"
-                 Text="40" Width="120" Margin="0,5,0,0"/>
+    <!-- LEFT COLUMN -->
+    <Grid Grid.Column="0" Margin="6" RowDefinitions="Auto,*">
 
-        <!-- Row 2: Roof width -->
-        <TextBlock Grid.Row="2" Grid.Column="0"
-                   Text="Roof width (eave to ridge, horizontal)" Margin="0,5,5,0" />
-        <TextBox x:Name="RoofWidthTextBox"
-                 Grid.Row="2" Grid.Column="1"
-                 Text="15" Width="120" Margin="0,5,0,0"/>
+      <!-- Roof inputs (top) -->
+      <Border Grid.Row="0"
+              Padding="10"
+              Margin="0,0,0,10"
+              BorderThickness="1"
+              BorderBrush="#FF3A6EA5"
+              Background="#FFEFF7FF">
+        <StackPanel>
+          <TextBlock Text="Roof inputs"
+                     FontWeight="Bold"
+                     Margin="0,0,0,8"
+                     Foreground="#FF1F4F7A"/>
 
-        <!-- Row 3: Roof angle -->
-        <TextBlock Grid.Row="3" Grid.Column="0"
-                   Text="Roof angle (degrees)" Margin="0,5,5,0" />
-        <TextBox x:Name="RoofAngleTextBox"
-                 Grid.Row="3" Grid.Column="1"
-                 Text="26.565" Width="120" Margin="0,5,0,0"/>
+          <!-- labels left, fields right; right margin keeps away from border -->
+          <Grid ColumnDefinitions="Auto,*"
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                Margin="0,0,10,0">
 
-        <!-- Row 4: Sheet width -->
-        <TextBlock Grid.Row="4" Grid.Column="0"
-                   Text="Sheet width" Margin="0,5,5,0" />
-        <TextBox x:Name="SheetWidthTextBox"
-                 Grid.Row="4" Grid.Column="1"
-                 Text="3" Width="120" Margin="0,5,0,0"/>
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       Text="Roof type"
+                       VerticalAlignment="Center"
+                       Margin="0,0,5,0" />
+            <ComboBox x:Name="RoofTypeComboBox"
+                      Grid.Row="0" Grid.Column="1"
+                      MinWidth="120"
+                      HorizontalAlignment="Stretch"
+                      SelectedIndex="0"
+                      Margin="0,4,0,0">
+              <ComboBoxItem Content="Single face" />
+              <ComboBoxItem Content="Gable roof" />
+              <ComboBoxItem Content="Hip roof (4 faces same)" />
+              <ComboBoxItem Content="Valley roof (2 faces same)" />
+            </ComboBox>
 
-        <!-- Row 5: Sheet overlap -->
-        <TextBlock Grid.Row="5" Grid.Column="0"
-                   Text="Sheet overlap" Margin="0,5,5,0" />
-        <TextBox x:Name="SheetOverlapTextBox"
-                 Grid.Row="5" Grid.Column="1"
-                 Text="0.125" Width="120" Margin="0,5,0,0"/>
+            <TextBlock Grid.Row="1" Grid.Column="0"
+                       Text="Roof length (along eave)"
+                       Margin="0,5,5,0" />
+            <TextBox x:Name="RoofLengthTextBox"
+                     Grid.Row="1" Grid.Column="1"
+                     MinWidth="120"
+                     HorizontalAlignment="Stretch"
+                     Text="40" Margin="0,5,0,0"/>
 
-        <!-- Row 6: Ridge gap -->
-        <TextBlock Grid.Row="6" Grid.Column="0"
-                   Text="Ridge gap" Margin="0,5,5,0" />
-        <TextBox x:Name="RidgeGapTextBox"
-                 Grid.Row="6" Grid.Column="1"
-                 Text="0" Width="120" Margin="0,5,0,0"/>
+            <TextBlock Grid.Row="2" Grid.Column="0"
+                       Text="Roof width (eave to ridge, horizontal)"
+                       Margin="0,5,5,0" />
+            <TextBox x:Name="RoofWidthTextBox"
+                     Grid.Row="2" Grid.Column="1"
+                     MinWidth="120"
+                     HorizontalAlignment="Stretch"
+                     Text="15" Margin="0,5,0,0"/>
 
-        <!-- Row 7: Calculate button + summary -->
-        <Button x:Name="CalculateButton"
-                Grid.Row="7" Grid.Column="0"
-                Content="Calculate"
-                Width="120" Margin="0,10,5,0"
-                Click="OnCalculateClick" />
+            <TextBlock Grid.Row="3" Grid.Column="0"
+                       Text="Roof angle (degrees)"
+                       Margin="0,5,5,0" />
+            <TextBox x:Name="RoofAngleTextBox"
+                     Grid.Row="3" Grid.Column="1"
+                     MinWidth="120"
+                     HorizontalAlignment="Stretch"
+                     Text="26.565" Margin="0,5,0,0"/>
 
-        <TextBlock x:Name="ResultSummaryTextBlock"
-                   Grid.Row="7" Grid.Column="1"
-                   Margin="0,10,0,0"
-                   FontWeight="Bold" />
-      </Grid>
-    </Border>
+            <TextBlock Grid.Row="4" Grid.Column="0"
+                       Text="Sheet width"
+                       Margin="0,5,5,0" />
+            <TextBox x:Name="SheetWidthTextBox"
+                     Grid.Row="4" Grid.Column="1"
+                     MinWidth="120"
+                     HorizontalAlignment="Stretch"
+                     Text="3" Margin="0,5,0,0"/>
 
-    <!-- Output area: panel list -->
-    <Border Grid.Row="1" Margin="10,0,10,10" Padding="10" BorderThickness="1">
+            <TextBlock Grid.Row="5" Grid.Column="0"
+                       Text="Sheet overlap"
+                       Margin="0,5,5,0" />
+            <TextBox x:Name="SheetOverlapTextBox"
+                     Grid.Row="5" Grid.Column="1"
+                     MinWidth="120"
+                     HorizontalAlignment="Stretch"
+                     Text="0.125" Margin="0,5,0,0"/>
+
+            <TextBlock Grid.Row="6" Grid.Column="0"
+                       Text="Ridge gap"
+                       Margin="0,5,5,0" />
+            <TextBox x:Name="RidgeGapTextBox"
+                     Grid.Row="6" Grid.Column="1"
+                     MinWidth="120"
+                     HorizontalAlignment="Stretch"
+                     Text="0" Margin="0,5,0,0"/>
+
+            <Button x:Name="CalculateButton"
+                    Grid.Row="7" Grid.Column="0"
+                    Content="Calculate"
+                    Width="120"
+                    Margin="0,10,5,0"
+                    Click="OnCalculateClick" />
+
+            <TextBlock x:Name="ResultSummaryTextBlock"
+                       Grid.Row="7" Grid.Column="1"
+                       Margin="0,10,0,0"
+                       FontWeight="Bold"
+                       TextWrapping="Wrap"
+                       Foreground="#FF1F4F7A"/>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- Panels (bottom) -->
+      <Border Grid.Row="1"
+              Padding="10,10,20,10"
+              Margin="0,0,0,0"
+              BorderThickness="1"
+              BorderBrush="#FFB0B0B0"
+              Background="#FFF5F5F5">
+        <Grid RowDefinitions="Auto,*">
+          <TextBlock Grid.Row="0"
+                     Text="Panels"
+                     FontWeight="Bold"
+                     Margin="0,0,0,5"
+                     Foreground="#FF333333"/>
+
+          <ScrollViewer Grid.Row="1"
+                        VerticalScrollBarVisibility="Auto"
+                        HorizontalScrollBarVisibility="Auto">
+            <ListBox x:Name="PanelListBox">
+              <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="core:Panel">
+                  <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
+                    <Run Text="{Binding Face}" />
+                    <Run Text="  " />
+                    <Run Text="Panel " />
+                    <Run Text="{Binding Index}" />
+                    <Run Text=" | eavePos=" />
+                    <Run Text="{Binding EavePosition, StringFormat='{}{0:F3}'}" />
+                    <Run Text=" | cover=" />
+                    <Run Text="{Binding EffectiveWidth, StringFormat='{}{0:F3}'}" />
+                    <Run Text="&#x0a;length=" />
+                    <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
+                  </TextBlock>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </ScrollViewer>
+        </Grid>
+      </Border>
+
+    </Grid>
+
+    <!-- RIGHT COLUMN: diagram -->
+    <Border Grid.Column="1"
+            Margin="6"
+            Padding="10,10,20,10"
+            BorderThickness="1"
+            BorderBrush="#FF3A6EA5"
+            Background="#FFFFFFFF">
       <StackPanel>
-        <TextBlock Text="Panels" FontWeight="Bold" Margin="0,0,0,5"/>
-
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="350">
-          <ListBox x:Name="PanelListBox">
-            <ListBox.ItemTemplate>
-              <DataTemplate x:DataType="core:Panel">
-                <TextBlock>
-                  <!-- Face name (for gable/hip/valley/tapered) -->
-                  <Run Text="{Binding Face}" />
-                  <Run Text=" " />
-
-                  <Run Text="Panel " />
-                  <Run Text="{Binding Index}" />
-
-                  <Run Text=" | eavePos=" />
-                  <Run Text="{Binding EavePosition, StringFormat='{}{0:F3}'}" />
-
-                  <Run Text=" | cover=" />
-                  <Run Text="{Binding EffectiveWidth, StringFormat='{}{0:F3}'}" />
-
-                  <Run Text=" | length=" />
-                  <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
-                </TextBlock>
-              </DataTemplate>
-            </ListBox.ItemTemplate>
-          </ListBox>
-        </ScrollViewer>
+        <TextBlock Text="Roof layout (diagram)"
+                   FontWeight="Bold"
+                   Margin="0,0,0,8"
+                   Foreground="#FF1F4F7A"/>
+        <Grid>
+          <Canvas x:Name="DiagramCanvas"
+                  Background="#FFF8F8F8" />
+        </Grid>
       </StackPanel>
     </Border>
+
   </Grid>
 </Window>
