@@ -122,13 +122,23 @@
               BorderThickness="1"
               BorderBrush="#FFB0B0B0"
               Background="#FFF5F5F5">
-        <Grid RowDefinitions="Auto,*">
+        <!--
+          Row 0: header
+          Row 1: panel list
+          Row 2: sheet summary header
+          Row 3: sheet summary list
+          Row 4: export buttons at bottom-right
+        -->
+        <Grid RowDefinitions="Auto,*,Auto,Auto,Auto">
+
+          <!-- Header -->
           <TextBlock Grid.Row="0"
-                     Text="Panels"
+                     Text="Panels / material list"
                      FontWeight="Bold"
                      Margin="0,0,0,5"
                      Foreground="#FF333333"/>
 
+          <!-- Full panel list -->
           <ScrollViewer Grid.Row="1"
                         VerticalScrollBarVisibility="Auto"
                         HorizontalScrollBarVisibility="Auto">
@@ -151,6 +161,44 @@
               </ListBox.ItemTemplate>
             </ListBox>
           </ScrollViewer>
+
+          <!-- Sheet summary header -->
+          <TextBlock Grid.Row="2"
+                     Text="Sheet summary (grouped by length)"
+                     FontWeight="Bold"
+                     Margin="0,10,0,5"
+                     Foreground="#FF333333" />
+
+          <!-- Sheet summary list -->
+          <ScrollViewer Grid.Row="3"
+                        VerticalScrollBarVisibility="Auto"
+                        HorizontalScrollBarVisibility="Auto">
+            <ListBox x:Name="SheetSummaryListBox">
+              <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="core:SheetSummary">
+                  <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
+                    <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
+                    <Run Text=" length × " />
+                    <Run Text="{Binding Count}" />
+                    <Run Text=" pcs" />
+                  </TextBlock>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </ScrollViewer>
+
+          <!-- Export buttons at bottom -->
+          <StackPanel Grid.Row="4"
+                      Orientation="Horizontal"
+                      HorizontalAlignment="Right"
+                      Margin="0,10,0,0">
+            <Button Content="Export sheets CSV"
+                    Margin="0,0,5,0"
+                    Click="OnExportSheetSummaryCsvClick" />
+            <Button Content="Export panels CSV"
+                    Click="OnExportPanelsCsvClick" />
+          </StackPanel>
+
         </Grid>
       </Border>
 

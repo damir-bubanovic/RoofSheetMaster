@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Platform.Storage;
 using RoofSheetMaster.Core;
 using PanelModel = RoofSheetMaster.Core.Panel;
 
@@ -12,6 +14,8 @@ namespace RoofSheetMaster.Desktop;
 
 public partial class MainWindow : Window
 {
+    private MaterialList? _lastMaterials;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -152,19 +156,105 @@ public partial class MainWindow : Window
                 summarySuffix = "(valley, 2 faces same for now)";
             }
 
+            // remember last materials for export / summary
+            _lastMaterials = materials;
+
+            // bind UI lists
+            PanelListBox.ItemsSource = materials.Panels;
+            SheetSummaryListBox.ItemsSource = materials.SheetSummaries;
+
             ResultSummaryTextBlock.Text =
                 $"Total sheets: {materials.TotalSheets} {summarySuffix}";
-            PanelListBox.ItemsSource = materials.Panels;
 
             // Draw diagram from panels
             RenderDiagram(materials.Panels);
         }
         catch (Exception ex)
         {
+            _lastMaterials = null;
             ResultSummaryTextBlock.Text = $"Error: {ex.Message}";
             PanelListBox.ItemsSource = Array.Empty<object>();
+            SheetSummaryListBox.ItemsSource = Array.Empty<object>();
             DiagramCanvas.Children.Clear();
         }
+    }
+
+    private async void OnExportSheetSummaryCsvClick(object? sender, RoutedEventArgs e)
+    {
+        if (_lastMaterials == null || _lastMaterials.SheetSummaries.Count == 0)
+        {
+            ResultSummaryTextBlock.Text = "Nothing to export – calculate a roof first.";
+            return;
+        }
+
+        var options = new FilePickerSaveOptions
+        {
+            Title = "Export sheet summary CSV",
+            SuggestedFileName = "SheetSummary.csv",
+            FileTypeChoices = new[]
+            {
+                new FilePickerFileType("CSV files")
+                {
+                    Patterns = new[] { "*.csv" }
+                }
+            }
+        };
+
+        var file = await this.StorageProvider.SaveFilePickerAsync(options);
+        if (file == null)
+            return;
+
+        await using (var stream = await file.OpenWriteAsync())
+        using (var writer = new StreamWriter(stream))
+        {
+            writer.WriteLine("SheetLength,Count");
+            foreach (var s in _lastMaterials.SheetSummaries)
+            {
+                writer.WriteLine($"{s.SheetLength:F3},{s.Count}");
+            }
+        }
+
+        ResultSummaryTextBlock.Text = $"Exported sheet summary CSV to: {file.Path}";
+    }
+
+    private async void OnExportPanelsCsvClick(object? sender, RoutedEventArgs e)
+    {
+        if (_lastMaterials == null || _lastMaterials.Panels.Count == 0)
+        {
+            ResultSummaryTextBlock.Text = "Nothing to export – calculate a roof first.";
+            return;
+        }
+
+        var options = new FilePickerSaveOptions
+        {
+            Title = "Export full panel list CSV",
+            SuggestedFileName = "Panels.csv",
+            FileTypeChoices = new[]
+            {
+                new FilePickerFileType("CSV files")
+                {
+                    Patterns = new[] { "*.csv" }
+                }
+            }
+        };
+
+        var file = await this.StorageProvider.SaveFilePickerAsync(options);
+        if (file == null)
+            return;
+
+        await using (var stream = await file.OpenWriteAsync())
+        using (var writer = new StreamWriter(stream))
+        {
+            writer.WriteLine("Face,Index,EavePosition,EffectiveWidth,SheetLength");
+            foreach (var p in _lastMaterials.Panels)
+            {
+                var face = p.Face ?? string.Empty;
+                writer.WriteLine(
+                    $"{face},{p.Index},{p.EavePosition:F3},{p.EffectiveWidth:F3},{p.SheetLength:F3}");
+            }
+        }
+
+        ResultSummaryTextBlock.Text = $"Exported panel list CSV to: {file.Path}";
     }
 
     private void RenderDiagram(IReadOnlyList<PanelModel> panels)
