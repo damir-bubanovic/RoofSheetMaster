@@ -89,7 +89,6 @@ This roadmap is split into **Completed** and **To-Do** chapters so it is easy to
 
 ---
 
-## 🕒 To-Do Chapters
 
 ### Chapter 6 — Roof Model Expansion (Per-Face Dimensions)
 
@@ -111,6 +110,8 @@ This roadmap is split into **Completed** and **To-Do** chapters so it is easy to
 - Option to round sheet lengths to nearest increment (e.g. 5 mm or 1/8")
 
 ---
+
+## 🕒 To-Do Chapters
 
 ### Chapter 8 — Multiple Roof Sections
 
