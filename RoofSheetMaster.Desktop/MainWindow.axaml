@@ -27,15 +27,30 @@
 
               <!-- labels left, fields right; right margin keeps away from border -->
               <Grid ColumnDefinitions="Auto,*"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                     Margin="0,0,10,0">
 
+                <!-- Units -->
                 <TextBlock Grid.Row="0" Grid.Column="0"
+                           Text="Units"
+                           VerticalAlignment="Center"
+                           Margin="0,0,5,0" />
+                <ComboBox x:Name="UnitsComboBox"
+                          Grid.Row="0" Grid.Column="1"
+                          MinWidth="120"
+                          HorizontalAlignment="Stretch"
+                          SelectedIndex="1"
+                          Margin="0,4,0,0">
+                  <ComboBoxItem Content="Metric (m)" />
+                  <ComboBoxItem Content="Imperial (ft)" />
+                </ComboBox>
+
+                <TextBlock Grid.Row="1" Grid.Column="0"
                            Text="Roof type"
                            VerticalAlignment="Center"
                            Margin="0,0,5,0" />
                 <ComboBox x:Name="RoofTypeComboBox"
-                          Grid.Row="0" Grid.Column="1"
+                          Grid.Row="1" Grid.Column="1"
                           MinWidth="120"
                           HorizontalAlignment="Stretch"
                           SelectedIndex="0"
@@ -46,69 +61,81 @@
                   <ComboBoxItem Content="Valley roof (2 faces same)" />
                 </ComboBox>
 
-                <TextBlock Grid.Row="1" Grid.Column="0"
+                <TextBlock Grid.Row="2" Grid.Column="0"
                            Text="Roof length (along eave)"
                            Margin="0,5,5,0" />
                 <TextBox x:Name="RoofLengthTextBox"
-                         Grid.Row="1" Grid.Column="1"
+                         Grid.Row="2" Grid.Column="1"
                          MinWidth="120"
                          HorizontalAlignment="Stretch"
                          Text="40" Margin="0,5,0,0"/>
 
-                <TextBlock Grid.Row="2" Grid.Column="0"
+                <TextBlock Grid.Row="3" Grid.Column="0"
                            Text="Roof width (eave to ridge, horizontal)"
                            Margin="0,5,5,0" />
                 <TextBox x:Name="RoofWidthTextBox"
-                         Grid.Row="2" Grid.Column="1"
+                         Grid.Row="3" Grid.Column="1"
                          MinWidth="120"
                          HorizontalAlignment="Stretch"
                          Text="15" Margin="0,5,0,0"/>
 
-                <TextBlock Grid.Row="3" Grid.Column="0"
+                <TextBlock Grid.Row="4" Grid.Column="0"
                            Text="Roof angle (degrees)"
                            Margin="0,5,5,0" />
                 <TextBox x:Name="RoofAngleTextBox"
-                         Grid.Row="3" Grid.Column="1"
+                         Grid.Row="4" Grid.Column="1"
                          MinWidth="120"
                          HorizontalAlignment="Stretch"
                          Text="26.565" Margin="0,5,0,0"/>
 
-                <TextBlock Grid.Row="4" Grid.Column="0"
+                <TextBlock Grid.Row="5" Grid.Column="0"
                            Text="Sheet width"
                            Margin="0,5,5,0" />
                 <TextBox x:Name="SheetWidthTextBox"
-                         Grid.Row="4" Grid.Column="1"
+                         Grid.Row="5" Grid.Column="1"
                          MinWidth="120"
                          HorizontalAlignment="Stretch"
                          Text="3" Margin="0,5,0,0"/>
 
-                <TextBlock Grid.Row="5" Grid.Column="0"
+                <TextBlock Grid.Row="6" Grid.Column="0"
                            Text="Sheet overlap"
                            Margin="0,5,5,0" />
                 <TextBox x:Name="SheetOverlapTextBox"
-                         Grid.Row="5" Grid.Column="1"
+                         Grid.Row="6" Grid.Column="1"
                          MinWidth="120"
                          HorizontalAlignment="Stretch"
                          Text="0.125" Margin="0,5,0,0"/>
 
-                <TextBlock Grid.Row="6" Grid.Column="0"
+                <TextBlock Grid.Row="7" Grid.Column="0"
                            Text="Ridge gap"
                            Margin="0,5,5,0" />
                 <TextBox x:Name="RidgeGapTextBox"
-                         Grid.Row="6" Grid.Column="1"
+                         Grid.Row="7" Grid.Column="1"
                          MinWidth="120"
                          HorizontalAlignment="Stretch"
                          Text="0" Margin="0,5,0,0"/>
 
+                <!-- Sheet length rounding -->
+                <TextBlock Grid.Row="8" Grid.Column="0"
+                           Text="Sheet length rounding"
+                           Margin="0,5,5,0" />
+                <TextBox x:Name="SheetLengthRoundingTextBox"
+                         Grid.Row="8" Grid.Column="1"
+                         MinWidth="120"
+                         HorizontalAlignment="Stretch"
+                         Text="0"
+                         ToolTip.Tip="0 = no rounding. Example: 0.125 for 1/8, 0.01 for 1 cm or 0.01 m."
+                         Margin="0,5,0,0"/>
+
                 <Button x:Name="CalculateButton"
-                        Grid.Row="7" Grid.Column="0"
+                        Grid.Row="9" Grid.Column="0"
                         Content="Calculate"
                         Width="120"
                         Margin="0,10,5,0"
                         Click="OnCalculateClick" />
 
                 <TextBlock x:Name="ResultSummaryTextBlock"
-                           Grid.Row="7" Grid.Column="1"
+                           Grid.Row="9" Grid.Column="1"
                            Margin="0,10,0,0"
                            FontWeight="Bold"
                            TextWrapping="Wrap"

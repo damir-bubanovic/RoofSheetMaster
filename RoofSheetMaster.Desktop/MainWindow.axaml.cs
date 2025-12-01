@@ -48,6 +48,28 @@ public partial class MainWindow : Window
         return value;
     }
 
+    /// <summary>
+    /// Round a value to the nearest multiple of increment.
+    /// If increment <= 0, returns the original value.
+    /// </summary>
+    private static double RoundToIncrement(double value, double increment)
+    {
+        if (increment <= 0)
+            return value;
+
+        return Math.Round(value / increment) * increment;
+    }
+
+    /// <summary>
+    /// Get human-readable units description from the Units combo.
+    /// </summary>
+    private string GetUnitsDescription()
+    {
+        // 0 = Metric (m), 1 = Imperial (ft)
+        var idx = UnitsComboBox.SelectedIndex;
+        return idx == 0 ? "metric (m)" : "imperial (ft)";
+    }
+
     private void OnFaceOverridesToggle(object? sender, RoutedEventArgs e)
     {
         var enabled = FaceOverridesCheckBox.IsChecked == true;
@@ -71,8 +93,20 @@ public partial class MainWindow : Window
             if (!double.TryParse(RidgeGapTextBox.Text, out var ridgeGap))
                 throw new Exception("Invalid ridge gap.");
 
+            // Sheet length rounding
+            double roundingIncrement = 0;
+            var roundingRaw = SheetLengthRoundingTextBox.Text?.Trim();
+            if (!string.IsNullOrEmpty(roundingRaw))
+            {
+                if (!double.TryParse(roundingRaw, out roundingIncrement))
+                    throw new Exception("Invalid sheet length rounding value.");
+            }
+            if (roundingIncrement < 0)
+                throw new Exception("Sheet length rounding must be zero or positive.");
+
             var roofTypeIndex = RoofTypeComboBox.SelectedIndex;
             var overridesEnabled = FaceOverridesCheckBox.IsChecked == true;
+            var unitsDescription = GetUnitsDescription();
 
             MaterialList materials;
             string summarySuffix;
@@ -232,6 +266,15 @@ public partial class MainWindow : Window
                     : "(valley, 2 faces same for now)";
             }
 
+            // Apply sheet length rounding if requested.
+            if (roundingIncrement > 0)
+            {
+                foreach (var panel in materials.Panels)
+                {
+                    panel.SheetLength = RoundToIncrement(panel.SheetLength, roundingIncrement);
+                }
+            }
+
             // remember last materials for export / summary
             _lastMaterials = materials;
 
@@ -240,7 +283,7 @@ public partial class MainWindow : Window
             SheetSummaryListBox.ItemsSource = materials.SheetSummaries;
 
             ResultSummaryTextBlock.Text =
-                $"Total sheets: {materials.TotalSheets} {summarySuffix}";
+                $"Total sheets: {materials.TotalSheets} {summarySuffix} [{unitsDescription}]";
 
             // Draw diagram from panels
             RenderDiagram(materials.Panels);
