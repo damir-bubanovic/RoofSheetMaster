@@ -21,6 +21,39 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Read an optional override value.
+    /// If overrides are disabled, always returns defaultValue.
+    /// If overrides are enabled:
+    ///   - empty -> defaultValue
+    ///   - invalid text -> throws with a clear error.
+    /// </summary>
+    private double GetOverrideOrDefault(
+        TextBox textBox,
+        double defaultValue,
+        string fieldLabel,
+        bool overridesEnabled)
+    {
+        if (!overridesEnabled)
+            return defaultValue;
+
+        var raw = textBox.Text?.Trim();
+
+        if (string.IsNullOrEmpty(raw))
+            return defaultValue;
+
+        if (!double.TryParse(raw, out var value))
+            throw new Exception($"Invalid {fieldLabel} override.");
+
+        return value;
+    }
+
+    private void OnFaceOverridesToggle(object? sender, RoutedEventArgs e)
+    {
+        var enabled = FaceOverridesCheckBox.IsChecked == true;
+        FaceOverridesPanel.IsVisible = enabled;
+    }
+
     private void OnCalculateClick(object? sender, RoutedEventArgs e)
     {
         try
@@ -39,6 +72,7 @@ public partial class MainWindow : Window
                 throw new Exception("Invalid ridge gap.");
 
             var roofTypeIndex = RoofTypeComboBox.SelectedIndex;
+            var overridesEnabled = FaceOverridesCheckBox.IsChecked == true;
 
             MaterialList materials;
             string summarySuffix;
@@ -77,14 +111,39 @@ public partial class MainWindow : Window
             }
             else if (roofTypeIndex == 2)
             {
-                // Hip roof (4 faces, same dimensions for now)
+                // Hip roof (4 faces, with optional per-face overrides)
+
+                // FrontLeft overrides
+                var flLength = GetOverrideOrDefault(
+                    HipFrontLeftLengthTextBox, roofLength, "Hip FrontLeft length", overridesEnabled);
+                var flWidth = GetOverrideOrDefault(
+                    HipFrontLeftWidthTextBox, roofWidth, "Hip FrontLeft width", overridesEnabled);
+
+                // FrontRight overrides
+                var frLength = GetOverrideOrDefault(
+                    HipFrontRightLengthTextBox, roofLength, "Hip FrontRight length", overridesEnabled);
+                var frWidth = GetOverrideOrDefault(
+                    HipFrontRightWidthTextBox, roofWidth, "Hip FrontRight width", overridesEnabled);
+
+                // BackLeft overrides
+                var blLength = GetOverrideOrDefault(
+                    HipBackLeftLengthTextBox, roofLength, "Hip BackLeft length", overridesEnabled);
+                var blWidth = GetOverrideOrDefault(
+                    HipBackLeftWidthTextBox, roofWidth, "Hip BackLeft width", overridesEnabled);
+
+                // BackRight overrides
+                var brLength = GetOverrideOrDefault(
+                    HipBackRightLengthTextBox, roofLength, "Hip BackRight length", overridesEnabled);
+                var brWidth = GetOverrideOrDefault(
+                    HipBackRightWidthTextBox, roofWidth, "Hip BackRight width", overridesEnabled);
+
                 var hipRoof = new HipRoof
                 {
                     FrontLeft = new RoofFace
                     {
                         Name = "FrontLeft",
-                        RoofLength = roofLength,
-                        RoofWidth = roofWidth,
+                        RoofLength = flLength,
+                        RoofWidth = flWidth,
                         RoofAngleDegrees = roofAngle,
                         SheetWidth = sheetWidth,
                         SheetOverlap = sheetOverlap,
@@ -93,8 +152,8 @@ public partial class MainWindow : Window
                     FrontRight = new RoofFace
                     {
                         Name = "FrontRight",
-                        RoofLength = roofLength,
-                        RoofWidth = roofWidth,
+                        RoofLength = frLength,
+                        RoofWidth = frWidth,
                         RoofAngleDegrees = roofAngle,
                         SheetWidth = sheetWidth,
                         SheetOverlap = sheetOverlap,
@@ -103,8 +162,8 @@ public partial class MainWindow : Window
                     BackLeft = new RoofFace
                     {
                         Name = "BackLeft",
-                        RoofLength = roofLength,
-                        RoofWidth = roofWidth,
+                        RoofLength = blLength,
+                        RoofWidth = blWidth,
                         RoofAngleDegrees = roofAngle,
                         SheetWidth = sheetWidth,
                         SheetOverlap = sheetOverlap,
@@ -113,8 +172,8 @@ public partial class MainWindow : Window
                     BackRight = new RoofFace
                     {
                         Name = "BackRight",
-                        RoofLength = roofLength,
-                        RoofWidth = roofWidth,
+                        RoofLength = brLength,
+                        RoofWidth = brWidth,
                         RoofAngleDegrees = roofAngle,
                         SheetWidth = sheetWidth,
                         SheetOverlap = sheetOverlap,
@@ -123,18 +182,33 @@ public partial class MainWindow : Window
                 };
 
                 materials = RoofCalculator.CalculateHipRoof(hipRoof);
-                summarySuffix = "(hip, 4 faces same for now)";
+                summarySuffix = overridesEnabled
+                    ? "(hip, per-face dimensions)"
+                    : "(hip, 4 faces same for now)";
             }
             else
             {
-                // Valley roof (2 faces, same dimensions for now)
+                // Valley roof (2 faces, with optional per-face overrides)
+
+                // Upper face overrides
+                var upperLength = GetOverrideOrDefault(
+                    ValleyUpperLengthTextBox, roofLength, "Valley Upper length", overridesEnabled);
+                var upperWidth = GetOverrideOrDefault(
+                    ValleyUpperWidthTextBox, roofWidth, "Valley Upper width", overridesEnabled);
+
+                // Lower face overrides
+                var lowerLength = GetOverrideOrDefault(
+                    ValleyLowerLengthTextBox, roofLength, "Valley Lower length", overridesEnabled);
+                var lowerWidth = GetOverrideOrDefault(
+                    ValleyLowerWidthTextBox, roofWidth, "Valley Lower width", overridesEnabled);
+
                 var valleyRoof = new ValleyRoof
                 {
                     UpperFace = new RoofFace
                     {
                         Name = "Upper",
-                        RoofLength = roofLength,
-                        RoofWidth = roofWidth,
+                        RoofLength = upperLength,
+                        RoofWidth = upperWidth,
                         RoofAngleDegrees = roofAngle,
                         SheetWidth = sheetWidth,
                         SheetOverlap = sheetOverlap,
@@ -143,8 +217,8 @@ public partial class MainWindow : Window
                     LowerFace = new RoofFace
                     {
                         Name = "Lower",
-                        RoofLength = roofLength,
-                        RoofWidth = roofWidth,
+                        RoofLength = lowerLength,
+                        RoofWidth = lowerWidth,
                         RoofAngleDegrees = roofAngle,
                         SheetWidth = sheetWidth,
                         SheetOverlap = sheetOverlap,
@@ -153,7 +227,9 @@ public partial class MainWindow : Window
                 };
 
                 materials = RoofCalculator.CalculateValleyRoof(valleyRoof);
-                summarySuffix = "(valley, 2 faces same for now)";
+                summarySuffix = overridesEnabled
+                    ? "(valley, per-face dimensions)"
+                    : "(valley, 2 faces same for now)";
             }
 
             // remember last materials for export / summary

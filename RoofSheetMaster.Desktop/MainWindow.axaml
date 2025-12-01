@@ -7,201 +7,303 @@
 
   <Grid Margin="4" ColumnDefinitions="420,*" RowDefinitions="*">
 
-    <!-- LEFT COLUMN -->
-    <Grid Grid.Column="0" Margin="6" RowDefinitions="Auto,*">
+    <!-- LEFT COLUMN (scrollable) -->
+    <Grid Grid.Column="0" Margin="6">
+      <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid RowDefinitions="Auto,*">
 
-      <!-- Roof inputs (top) -->
-      <Border Grid.Row="0"
-              Padding="10"
-              Margin="0,0,0,10"
-              BorderThickness="1"
-              BorderBrush="#FF3A6EA5"
-              Background="#FFEFF7FF">
-        <StackPanel>
-          <TextBlock Text="Roof inputs"
-                     FontWeight="Bold"
-                     Margin="0,0,0,8"
-                     Foreground="#FF1F4F7A"/>
+          <!-- Roof inputs (top) -->
+          <Border Grid.Row="0"
+                  Padding="10"
+                  Margin="0,0,0,10"
+                  BorderThickness="1"
+                  BorderBrush="#FF3A6EA5"
+                  Background="#FFEFF7FF">
+            <StackPanel>
+              <TextBlock Text="Roof inputs"
+                         FontWeight="Bold"
+                         Margin="0,0,0,8"
+                         Foreground="#FF1F4F7A"/>
 
-          <!-- labels left, fields right; right margin keeps away from border -->
-          <Grid ColumnDefinitions="Auto,*"
-                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
-                Margin="0,0,10,0">
+              <!-- labels left, fields right; right margin keeps away from border -->
+              <Grid ColumnDefinitions="Auto,*"
+                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                    Margin="0,0,10,0">
 
-            <TextBlock Grid.Row="0" Grid.Column="0"
-                       Text="Roof type"
-                       VerticalAlignment="Center"
-                       Margin="0,0,5,0" />
-            <ComboBox x:Name="RoofTypeComboBox"
-                      Grid.Row="0" Grid.Column="1"
-                      MinWidth="120"
-                      HorizontalAlignment="Stretch"
-                      SelectedIndex="0"
-                      Margin="0,4,0,0">
-              <ComboBoxItem Content="Single face" />
-              <ComboBoxItem Content="Gable roof" />
-              <ComboBoxItem Content="Hip roof (4 faces same)" />
-              <ComboBoxItem Content="Valley roof (2 faces same)" />
-            </ComboBox>
+                <TextBlock Grid.Row="0" Grid.Column="0"
+                           Text="Roof type"
+                           VerticalAlignment="Center"
+                           Margin="0,0,5,0" />
+                <ComboBox x:Name="RoofTypeComboBox"
+                          Grid.Row="0" Grid.Column="1"
+                          MinWidth="120"
+                          HorizontalAlignment="Stretch"
+                          SelectedIndex="0"
+                          Margin="0,4,0,0">
+                  <ComboBoxItem Content="Single face" />
+                  <ComboBoxItem Content="Gable roof" />
+                  <ComboBoxItem Content="Hip roof (4 faces same)" />
+                  <ComboBoxItem Content="Valley roof (2 faces same)" />
+                </ComboBox>
 
-            <TextBlock Grid.Row="1" Grid.Column="0"
-                       Text="Roof length (along eave)"
-                       Margin="0,5,5,0" />
-            <TextBox x:Name="RoofLengthTextBox"
-                     Grid.Row="1" Grid.Column="1"
-                     MinWidth="120"
-                     HorizontalAlignment="Stretch"
-                     Text="40" Margin="0,5,0,0"/>
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="Roof length (along eave)"
+                           Margin="0,5,5,0" />
+                <TextBox x:Name="RoofLengthTextBox"
+                         Grid.Row="1" Grid.Column="1"
+                         MinWidth="120"
+                         HorizontalAlignment="Stretch"
+                         Text="40" Margin="0,5,0,0"/>
 
-            <TextBlock Grid.Row="2" Grid.Column="0"
-                       Text="Roof width (eave to ridge, horizontal)"
-                       Margin="0,5,5,0" />
-            <TextBox x:Name="RoofWidthTextBox"
-                     Grid.Row="2" Grid.Column="1"
-                     MinWidth="120"
-                     HorizontalAlignment="Stretch"
-                     Text="15" Margin="0,5,0,0"/>
+                <TextBlock Grid.Row="2" Grid.Column="0"
+                           Text="Roof width (eave to ridge, horizontal)"
+                           Margin="0,5,5,0" />
+                <TextBox x:Name="RoofWidthTextBox"
+                         Grid.Row="2" Grid.Column="1"
+                         MinWidth="120"
+                         HorizontalAlignment="Stretch"
+                         Text="15" Margin="0,5,0,0"/>
 
-            <TextBlock Grid.Row="3" Grid.Column="0"
-                       Text="Roof angle (degrees)"
-                       Margin="0,5,5,0" />
-            <TextBox x:Name="RoofAngleTextBox"
-                     Grid.Row="3" Grid.Column="1"
-                     MinWidth="120"
-                     HorizontalAlignment="Stretch"
-                     Text="26.565" Margin="0,5,0,0"/>
+                <TextBlock Grid.Row="3" Grid.Column="0"
+                           Text="Roof angle (degrees)"
+                           Margin="0,5,5,0" />
+                <TextBox x:Name="RoofAngleTextBox"
+                         Grid.Row="3" Grid.Column="1"
+                         MinWidth="120"
+                         HorizontalAlignment="Stretch"
+                         Text="26.565" Margin="0,5,0,0"/>
 
-            <TextBlock Grid.Row="4" Grid.Column="0"
-                       Text="Sheet width"
-                       Margin="0,5,5,0" />
-            <TextBox x:Name="SheetWidthTextBox"
-                     Grid.Row="4" Grid.Column="1"
-                     MinWidth="120"
-                     HorizontalAlignment="Stretch"
-                     Text="3" Margin="0,5,0,0"/>
+                <TextBlock Grid.Row="4" Grid.Column="0"
+                           Text="Sheet width"
+                           Margin="0,5,5,0" />
+                <TextBox x:Name="SheetWidthTextBox"
+                         Grid.Row="4" Grid.Column="1"
+                         MinWidth="120"
+                         HorizontalAlignment="Stretch"
+                         Text="3" Margin="0,5,0,0"/>
 
-            <TextBlock Grid.Row="5" Grid.Column="0"
-                       Text="Sheet overlap"
-                       Margin="0,5,5,0" />
-            <TextBox x:Name="SheetOverlapTextBox"
-                     Grid.Row="5" Grid.Column="1"
-                     MinWidth="120"
-                     HorizontalAlignment="Stretch"
-                     Text="0.125" Margin="0,5,0,0"/>
+                <TextBlock Grid.Row="5" Grid.Column="0"
+                           Text="Sheet overlap"
+                           Margin="0,5,5,0" />
+                <TextBox x:Name="SheetOverlapTextBox"
+                         Grid.Row="5" Grid.Column="1"
+                         MinWidth="120"
+                         HorizontalAlignment="Stretch"
+                         Text="0.125" Margin="0,5,0,0"/>
 
-            <TextBlock Grid.Row="6" Grid.Column="0"
-                       Text="Ridge gap"
-                       Margin="0,5,5,0" />
-            <TextBox x:Name="RidgeGapTextBox"
-                     Grid.Row="6" Grid.Column="1"
-                     MinWidth="120"
-                     HorizontalAlignment="Stretch"
-                     Text="0" Margin="0,5,0,0"/>
+                <TextBlock Grid.Row="6" Grid.Column="0"
+                           Text="Ridge gap"
+                           Margin="0,5,5,0" />
+                <TextBox x:Name="RidgeGapTextBox"
+                         Grid.Row="6" Grid.Column="1"
+                         MinWidth="120"
+                         HorizontalAlignment="Stretch"
+                         Text="0" Margin="0,5,0,0"/>
 
-            <Button x:Name="CalculateButton"
-                    Grid.Row="7" Grid.Column="0"
-                    Content="Calculate"
-                    Width="120"
-                    Margin="0,10,5,0"
-                    Click="OnCalculateClick" />
+                <Button x:Name="CalculateButton"
+                        Grid.Row="7" Grid.Column="0"
+                        Content="Calculate"
+                        Width="120"
+                        Margin="0,10,5,0"
+                        Click="OnCalculateClick" />
 
-            <TextBlock x:Name="ResultSummaryTextBlock"
-                       Grid.Row="7" Grid.Column="1"
-                       Margin="0,10,0,0"
-                       FontWeight="Bold"
-                       TextWrapping="Wrap"
-                       Foreground="#FF1F4F7A"/>
-          </Grid>
-        </StackPanel>
-      </Border>
+                <TextBlock x:Name="ResultSummaryTextBlock"
+                           Grid.Row="7" Grid.Column="1"
+                           Margin="0,10,0,0"
+                           FontWeight="Bold"
+                           TextWrapping="Wrap"
+                           Foreground="#FF1F4F7A"/>
+              </Grid>
 
-      <!-- Panels (bottom) -->
-      <Border Grid.Row="1"
-              Padding="10,10,20,10"
-              Margin="0,0,0,0"
-              BorderThickness="1"
-              BorderBrush="#FFB0B0B0"
-              Background="#FFF5F5F5">
-        <!--
-          Row 0: header
-          Row 1: panel list
-          Row 2: sheet summary header
-          Row 3: sheet summary list
-          Row 4: export buttons at bottom-right
-        -->
-        <Grid RowDefinitions="Auto,*,Auto,Auto,Auto">
+              <!-- Per-face overrides toggle -->
+              <CheckBox x:Name="FaceOverridesCheckBox"
+                        Content="Enable per-face overrides (hip / valley only)"
+                        Margin="0,12,0,4"
+                        IsChecked="False"
+                        Checked="OnFaceOverridesToggle"
+                        Unchecked="OnFaceOverridesToggle" />
 
-          <!-- Header -->
-          <TextBlock Grid.Row="0"
-                     Text="Panels / material list"
-                     FontWeight="Bold"
-                     Margin="0,0,0,5"
-                     Foreground="#FF333333"/>
+              <!-- Per-face overrides (collapsible) -->
+              <StackPanel x:Name="FaceOverridesPanel"
+                          IsVisible="False">
 
-          <!-- Full panel list -->
-          <ScrollViewer Grid.Row="1"
-                        VerticalScrollBarVisibility="Auto"
-                        HorizontalScrollBarVisibility="Auto">
-            <ListBox x:Name="PanelListBox">
-              <ListBox.ItemTemplate>
-                <DataTemplate x:DataType="core:Panel">
-                  <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
-                    <Run Text="{Binding Face}" />
-                    <Run Text="  " />
-                    <Run Text="Panel " />
-                    <Run Text="{Binding Index}" />
-                    <Run Text=" | eavePos=" />
-                    <Run Text="{Binding EavePosition, StringFormat='{}{0:F3}'}" />
-                    <Run Text=" | cover=" />
-                    <Run Text="{Binding EffectiveWidth, StringFormat='{}{0:F3}'}" />
-                    <Run Text="&#x0a;length=" />
-                    <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
-                  </TextBlock>
-                </DataTemplate>
-              </ListBox.ItemTemplate>
-            </ListBox>
-          </ScrollViewer>
+                <TextBlock Text="Leave blank to use the main roof length/width above."
+                           Margin="0,0,0,6"
+                           FontSize="11"
+                           Foreground="#FF555555" />
 
-          <!-- Sheet summary header -->
-          <TextBlock Grid.Row="2"
-                     Text="Sheet summary (grouped by length)"
-                     FontWeight="Bold"
-                     Margin="0,10,0,5"
-                     Foreground="#FF333333" />
+                <!-- Hip + Valley face overrides: length / width -->
+                <Grid ColumnDefinitions="Auto,*,*"
+                      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
 
-          <!-- Sheet summary list -->
-          <ScrollViewer Grid.Row="3"
-                        VerticalScrollBarVisibility="Auto"
-                        HorizontalScrollBarVisibility="Auto">
-            <ListBox x:Name="SheetSummaryListBox">
-              <ListBox.ItemTemplate>
-                <DataTemplate x:DataType="core:SheetSummary">
-                  <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
-                    <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
-                    <Run Text=" length × " />
-                    <Run Text="{Binding Count}" />
-                    <Run Text=" pcs" />
-                  </TextBlock>
-                </DataTemplate>
-              </ListBox.ItemTemplate>
-            </ListBox>
-          </ScrollViewer>
+                  <!-- Hip faces -->
+                  <TextBlock Grid.Row="0" Grid.Column="0"
+                             Text="Hip FrontLeft"
+                             Margin="0,2,5,0" />
+                  <TextBox x:Name="HipFrontLeftLengthTextBox"
+                           Grid.Row="0" Grid.Column="1"
+                           Margin="0,2,5,0"
+                           Watermark="Length" />
+                  <TextBox x:Name="HipFrontLeftWidthTextBox"
+                           Grid.Row="0" Grid.Column="2"
+                           Margin="0,2,0,0"
+                           Watermark="Width" />
 
-          <!-- Export buttons at bottom -->
-          <StackPanel Grid.Row="4"
-                      Orientation="Horizontal"
-                      HorizontalAlignment="Right"
-                      Margin="0,10,0,0">
-            <Button Content="Export sheets CSV"
-                    Margin="0,0,5,0"
-                    Click="OnExportSheetSummaryCsvClick" />
-            <Button Content="Export panels CSV"
-                    Click="OnExportPanelsCsvClick" />
-          </StackPanel>
+                  <TextBlock Grid.Row="1" Grid.Column="0"
+                             Text="Hip FrontRight"
+                             Margin="0,2,5,0" />
+                  <TextBox x:Name="HipFrontRightLengthTextBox"
+                           Grid.Row="1" Grid.Column="1"
+                           Margin="0,2,5,0"
+                           Watermark="Length" />
+                  <TextBox x:Name="HipFrontRightWidthTextBox"
+                           Grid.Row="1" Grid.Column="2"
+                           Margin="0,2,0,0"
+                           Watermark="Width" />
+
+                  <TextBlock Grid.Row="2" Grid.Column="0"
+                             Text="Hip BackLeft"
+                             Margin="0,2,5,0" />
+                  <TextBox x:Name="HipBackLeftLengthTextBox"
+                           Grid.Row="2" Grid.Column="1"
+                           Margin="0,2,5,0"
+                           Watermark="Length" />
+                  <TextBox x:Name="HipBackLeftWidthTextBox"
+                           Grid.Row="2" Grid.Column="2"
+                           Margin="0,2,0,0"
+                           Watermark="Width" />
+
+                  <TextBlock Grid.Row="3" Grid.Column="0"
+                             Text="Hip BackRight"
+                             Margin="0,2,5,0" />
+                  <TextBox x:Name="HipBackRightLengthTextBox"
+                           Grid.Row="3" Grid.Column="1"
+                           Margin="0,2,5,0"
+                           Watermark="Length" />
+                  <TextBox x:Name="HipBackRightWidthTextBox"
+                           Grid.Row="3" Grid.Column="2"
+                           Margin="0,2,0,0"
+                           Watermark="Width" />
+
+                  <!-- Valley faces -->
+                  <TextBlock Grid.Row="4" Grid.Column="0"
+                             Text="Valley Upper"
+                             Margin="0,8,5,0" />
+                  <TextBox x:Name="ValleyUpperLengthTextBox"
+                           Grid.Row="4" Grid.Column="1"
+                           Margin="0,8,5,0"
+                           Watermark="Length" />
+                  <TextBox x:Name="ValleyUpperWidthTextBox"
+                           Grid.Row="4" Grid.Column="2"
+                           Margin="0,8,0,0"
+                           Watermark="Width" />
+
+                  <TextBlock Grid.Row="5" Grid.Column="0"
+                             Text="Valley Lower"
+                             Margin="0,2,5,0" />
+                  <TextBox x:Name="ValleyLowerLengthTextBox"
+                           Grid.Row="5" Grid.Column="1"
+                           Margin="0,2,5,0"
+                           Watermark="Length" />
+                  <TextBox x:Name="ValleyLowerWidthTextBox"
+                           Grid.Row="5" Grid.Column="2"
+                           Margin="0,2,0,0"
+                           Watermark="Width" />
+
+                </Grid>
+              </StackPanel>
+            </StackPanel>
+          </Border>
+
+          <!-- Panels (bottom) -->
+          <Border Grid.Row="1"
+                  Padding="10,10,20,10"
+                  Margin="0,0,0,0"
+                  BorderThickness="1"
+                  BorderBrush="#FFB0B0B0"
+                  Background="#FFF5F5F5">
+            <!--
+              Row 0: header
+              Row 1: panel list
+              Row 2: sheet summary header
+              Row 3: sheet summary list
+              Row 4: export buttons at bottom-right
+            -->
+            <Grid RowDefinitions="Auto,*,Auto,Auto,Auto">
+
+              <!-- Header -->
+              <TextBlock Grid.Row="0"
+                         Text="Panels / material list"
+                         FontWeight="Bold"
+                         Margin="0,0,0,5"
+                         Foreground="#FF333333"/>
+
+              <!-- Full panel list -->
+              <ScrollViewer Grid.Row="1"
+                            VerticalScrollBarVisibility="Auto"
+                            HorizontalScrollBarVisibility="Auto">
+                <ListBox x:Name="PanelListBox">
+                  <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="core:Panel">
+                      <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
+                        <Run Text="{Binding Face}" />
+                        <Run Text="  " />
+                        <Run Text="Panel " />
+                        <Run Text="{Binding Index}" />
+                        <Run Text=" | eavePos=" />
+                        <Run Text="{Binding EavePosition, StringFormat='{}{0:F3}'}" />
+                        <Run Text=" | cover=" />
+                        <Run Text="{Binding EffectiveWidth, StringFormat='{}{0:F3}'}" />
+                        <Run Text="&#x0a;length=" />
+                        <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
+                      </TextBlock>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+              </ScrollViewer>
+
+              <!-- Sheet summary header -->
+              <TextBlock Grid.Row="2"
+                         Text="Sheet summary (grouped by length)"
+                         FontWeight="Bold"
+                         Margin="0,10,0,5"
+                         Foreground="#FF333333" />
+
+              <!-- Sheet summary list -->
+              <ScrollViewer Grid.Row="3"
+                            VerticalScrollBarVisibility="Auto"
+                            HorizontalScrollBarVisibility="Auto">
+                <ListBox x:Name="SheetSummaryListBox">
+                  <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="core:SheetSummary">
+                      <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
+                        <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
+                        <Run Text=" length × " />
+                        <Run Text="{Binding Count}" />
+                        <Run Text=" pcs" />
+                      </TextBlock>
+                    </DataTemplate>
+                  </ListBox.ItemTemplate>
+                </ListBox>
+              </ScrollViewer>
+
+              <!-- Export buttons at bottom -->
+              <StackPanel Grid.Row="4"
+                          Orientation="Horizontal"
+                          HorizontalAlignment="Right"
+                          Margin="0,10,0,0">
+                <Button Content="Export sheets CSV"
+                        Margin="0,0,5,0"
+                        Click="OnExportSheetSummaryCsvClick" />
+                <Button Content="Export panels CSV"
+                        Click="OnExportPanelsCsvClick" />
+              </StackPanel>
+
+            </Grid>
+          </Border>
 
         </Grid>
-      </Border>
-
+      </ScrollViewer>
     </Grid>
 
     <!-- RIGHT COLUMN: diagram -->
