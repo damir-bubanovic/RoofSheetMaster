@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using RoofSheetMaster.Core;
@@ -9,9 +10,26 @@ using PanelModel = RoofSheetMaster.Core.Panel;
 
 namespace RoofSheetMaster.Desktop;
 
-
 public partial class MainWindow
 {
+    // Current zoom level for the diagram (1.0 = 100 %)
+    private double _diagramZoom = 1.0;
+
+    private void ApplyDiagramZoom()
+    {
+        if (DiagramCanvas is not null)
+        {
+            DiagramCanvas.RenderTransform = new ScaleTransform(_diagramZoom, _diagramZoom);
+        }
+    }
+
+    // Called by ZoomSlider.ValueChanged
+    private void OnZoomSliderValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        _diagramZoom = e.NewValue;
+        ApplyDiagramZoom();
+    }
+
     private void RenderDiagram(IReadOnlyList<PanelModel> panels)
     {
         DiagramCanvas.Children.Clear();
@@ -94,15 +112,9 @@ public partial class MainWindow
                 DiagramCanvas.Children.Add(rect);
 
                 // Label: two lines -> face on first line, panel index on second line
-                string labelText;
-                if (string.IsNullOrWhiteSpace(p.Face))
-                {
-                    labelText = $"P{p.Index}";
-                }
-                else
-                {
-                    labelText = $"{p.Face}\nP{p.Index}";
-                }
+                string labelText = string.IsNullOrWhiteSpace(p.Face)
+                    ? $"P{p.Index}"
+                    : $"{p.Face}\nP{p.Index}";
 
                 var text = new TextBlock
                 {
@@ -119,5 +131,8 @@ public partial class MainWindow
 
             rowIndex++;
         }
+
+        // Apply current zoom after drawing
+        ApplyDiagramZoom();
     }
 }

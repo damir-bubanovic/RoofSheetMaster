@@ -333,24 +333,63 @@
       </ScrollViewer>
     </Grid>
 
-    <!-- RIGHT COLUMN: diagram -->
+    <!-- RIGHT COLUMN: diagram with zoom + scroll -->
     <Border Grid.Column="1"
             Margin="6"
             Padding="10,10,20,10"
             BorderThickness="1"
             BorderBrush="#FF3A6EA5"
             Background="#FFFFFFFF">
-      <StackPanel>
-        <TextBlock Text="Roof layout (diagram)"
-                   FontWeight="Bold"
-                   Margin="0,0,0,8"
-                   Foreground="#FF1F4F7A"/>
-        <Grid>
+      <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Header + zoom controls -->
+        <StackPanel Grid.Row="0"
+                    Orientation="Horizontal"
+                    VerticalAlignment="Center">
+          <TextBlock Text="Roof layout (diagram)"
+                     FontWeight="Bold"
+                     Margin="0,0,0,8"
+                     Foreground="#FF1F4F7A"/>
+
+          <TextBlock Text="Zoom:"
+                     Margin="20,0,4,0"
+                     VerticalAlignment="Center" />
+
+          <Slider x:Name="ZoomSlider"
+                  Minimum="0.5"
+                  Maximum="3"
+                  Value="1"
+                  Width="150"
+                  TickFrequency="0.25"
+                  IsSnapToTickEnabled="True"
+                  ValueChanged="OnZoomSliderValueChanged"
+                  VerticalAlignment="Center" />
+
+          <TextBlock Margin="6,0,0,0"
+                     VerticalAlignment="Center"
+                     Text="{Binding #ZoomSlider.Value, StringFormat='{}{0:0.0}×'}" />
+        </StackPanel>
+
+        <!-- Scrollable diagram surface -->
+        <ScrollViewer Grid.Row="1"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
           <Canvas x:Name="DiagramCanvas"
-                  Background="#FFF8F8F8" />
-        </Grid>
-      </StackPanel>
+                  Background="#FFF8F8F8"
+                  MinWidth="600"
+                  MinHeight="400" />
+        </ScrollViewer>
+
+        <!-- Small hint text -->
+        <TextBlock Grid.Row="2"
+                   Margin="0,6,0,0"
+                   FontSize="11"
+                   Foreground="#FF666666"
+                   Text="Use zoom to inspect panel layout. Scrollbars appear when zoomed in."/>
+      </Grid>
     </Border>
+
+
 
   </Grid>
 </Window>
