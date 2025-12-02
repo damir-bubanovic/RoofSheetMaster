@@ -1,8 +1,10 @@
 using System.IO;
-using System.Threading.Tasks;
+using System.Globalization;
+using System.Text;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using RoofSheetMaster.Core;
 
 namespace RoofSheetMaster.Desktop;
 
@@ -30,7 +32,7 @@ public partial class MainWindow
         if (file == null) return;
 
         await using var stream = await file.OpenWriteAsync();
-        using var writer = new StreamWriter(stream);
+        using var writer = new StreamWriter(stream, new UTF8Encoding(false));
 
         writer.WriteLine("SheetLength,Count");
         foreach (var s in _lastMaterials.SheetSummaries)
@@ -38,7 +40,6 @@ public partial class MainWindow
 
         ResultSummaryTextBlock.Text = $"Exported sheet summary CSV to: {file.Path}";
     }
-
 
     private async void OnExportPanelsCsvClick(object? sender, RoutedEventArgs e)
     {
@@ -62,7 +63,7 @@ public partial class MainWindow
         if (file == null) return;
 
         await using var stream = await file.OpenWriteAsync();
-        using var writer = new StreamWriter(stream);
+        using var writer = new StreamWriter(stream, new UTF8Encoding(false));
 
         writer.WriteLine("Face,Index,EavePosition,EffectiveWidth,SheetLength");
         foreach (var p in _lastMaterials.Panels)
@@ -74,7 +75,6 @@ public partial class MainWindow
 
         ResultSummaryTextBlock.Text = $"Exported panel list CSV to: {file.Path}";
     }
-
 
     private async void OnExportFlashingsCsvClick(object? sender, RoutedEventArgs e)
     {
@@ -98,7 +98,7 @@ public partial class MainWindow
         if (file == null) return;
 
         await using var stream = await file.OpenWriteAsync();
-        using var writer = new StreamWriter(stream);
+        using var writer = new StreamWriter(stream, new UTF8Encoding(false));
 
         writer.WriteLine("Name,TotalLength,Count,Notes");
 

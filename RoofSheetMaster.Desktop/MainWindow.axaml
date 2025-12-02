@@ -12,13 +12,27 @@
     <!-- TOP MENU -->
     <Menu Grid.Row="0">
       <MenuItem Header="_File">
+        <MenuItem Header="_Save Project..."
+                  Click="OnSaveProjectClick" />
+        <MenuItem Header="_Load Project..."
+                  Click="OnLoadProjectClick" />
+
+        <Separator />
+
         <MenuItem Header="Export _Sheets CSV"
                   Click="OnExportSheetSummaryCsvClick" />
         <MenuItem Header="Export _Panels CSV"
                   Click="OnExportPanelsCsvClick" />
         <MenuItem Header="Export _Flashings CSV"
                   Click="OnExportFlashingsCsvClick" />
-        <!-- Save / Load can be added here in Chapter 10 -->
+                  
+        <Separator />
+
+        <MenuItem Header="Export cut _list (HTML)"
+                  Click="OnExportCutListHtmlClick" />
+
+        <MenuItem Header="Export layout _image (PNG)"
+              Click="OnExportLayoutPngClick" />
       </MenuItem>
     </Menu>
 
