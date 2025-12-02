@@ -129,7 +129,6 @@ This roadmap is split into **Completed** and **To-Do** chapters so it is easy to
 
 ---
 
-## 🕒 To-Do Chapters
 
 ### Chapter 10 — Exporting & Reports
 
@@ -148,5 +147,3 @@ This roadmap is split into **Completed** and **To-Do** chapters so it is easy to
 
 ---
 
-This file in the **repository root** is the single source of truth.  
-Any previous `Features.md` / `FEATURES.md` copies under `RoofSheetMaster.Core` or elsewhere should be removed.

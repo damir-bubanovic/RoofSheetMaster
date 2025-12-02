@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text.Json;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -9,6 +10,8 @@ namespace RoofSheetMaster.Desktop;
 
 public partial class MainWindow
 {
+    // ===== Manual Save / Load (menu) ========================================
+
     private ProjectSettings CaptureProject()
     {
         return new ProjectSettings
@@ -103,7 +106,7 @@ public partial class MainWindow
         var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
 
         await using var stream = await file.OpenWriteAsync();
-        using var writer = new System.IO.StreamWriter(stream);
+        using var writer = new StreamWriter(stream);
         await writer.WriteAsync(json);
 
         ResultSummaryTextBlock.Text = $"Project saved to: {file.Path}";
@@ -138,6 +141,66 @@ public partial class MainWindow
 
         RestoreProject(settings);
 
+        // Recalculate after explicit load
+        OnCalculateClick(this, new RoutedEventArgs());
+
         ResultSummaryTextBlock.Text = $"Project loaded from: {file.Path}";
+    }
+
+    // ===== Remember last-used inputs (auto-load/save) =======================
+
+    private string GetLastProjectFilePath()
+    {
+        var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var appDir = Path.Combine(baseDir, "RoofSheetMaster");
+
+        Directory.CreateDirectory(appDir);
+
+        return Path.Combine(appDir, "LastProject.json");
+    }
+
+    private void TryLoadLastProjectSilently()
+    {
+        try
+        {
+            var path = GetLastProjectFilePath();
+            if (!File.Exists(path))
+                return;
+
+            var json = File.ReadAllText(path);
+            var settings = JsonSerializer.Deserialize<ProjectSettings>(json);
+            if (settings == null)
+                return;
+
+            RestoreProject(settings);
+
+            // Auto-calculate based on restored values
+            OnCalculateClick(this, new RoutedEventArgs());
+        }
+        catch
+        {
+            // Ignore any errors on startup; user can still work normally.
+        }
+    }
+
+    private void SaveLastProjectSilently()
+    {
+        try
+        {
+            var path = GetLastProjectFilePath();
+            var settings = CaptureProject();
+            var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
+
+            File.WriteAllText(path, json);
+        }
+        catch
+        {
+            // Ignore errors on close; this is just a convenience feature.
+        }
+    }
+
+    private void OnMainWindowClosing(object? sender, WindowClosingEventArgs e)
+    {
+        SaveLastProjectSilently();
     }
 }

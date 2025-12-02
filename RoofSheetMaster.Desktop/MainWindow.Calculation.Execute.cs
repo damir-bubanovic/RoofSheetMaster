@@ -13,27 +13,43 @@ public partial class MainWindow
         try
         {
             if (!double.TryParse(RoofLengthTextBox.Text, out var roofLength))
-                throw new Exception("Invalid roof length.");
+                throw new Exception("Invalid roof length. Please enter a number.");
             if (!double.TryParse(RoofWidthTextBox.Text, out var roofWidth))
-                throw new Exception("Invalid roof width.");
+                throw new Exception("Invalid roof width. Please enter a number.");
             if (!double.TryParse(RoofAngleTextBox.Text, out var roofAngle))
-                throw new Exception("Invalid roof angle.");
+                throw new Exception("Invalid roof angle. Please enter a number.");
             if (!double.TryParse(SheetWidthTextBox.Text, out var sheetWidth))
-                throw new Exception("Invalid sheet width.");
+                throw new Exception("Invalid sheet width. Please enter a number.");
             if (!double.TryParse(SheetOverlapTextBox.Text, out var sheetOverlap))
-                throw new Exception("Invalid sheet overlap.");
+                throw new Exception("Invalid sheet overlap. Please enter a number.");
             if (!double.TryParse(RidgeGapTextBox.Text, out var ridgeGap))
-                throw new Exception("Invalid ridge gap.");
+                throw new Exception("Invalid ridge gap. Please enter a number.");
 
             double roundingIncrement = 0;
             var roundingRaw = SheetLengthRoundingTextBox.Text?.Trim();
             if (!string.IsNullOrEmpty(roundingRaw))
             {
                 if (!double.TryParse(roundingRaw, out roundingIncrement))
-                    throw new Exception("Invalid sheet length rounding value.");
+                    throw new Exception("Invalid sheet length rounding value. Please enter a number.");
             }
             if (roundingIncrement < 0)
                 throw new Exception("Sheet length rounding must be zero or positive.");
+
+            // Additional validation for friendlier errors
+            if (roofLength <= 0)
+                throw new Exception("Roof length must be greater than zero.");
+            if (roofWidth <= 0)
+                throw new Exception("Roof width must be greater than zero.");
+            if (roofAngle <= 0 || roofAngle >= 89)
+                throw new Exception("Roof angle must be between 0 and 89 degrees.");
+            if (sheetWidth <= 0)
+                throw new Exception("Sheet width must be greater than zero.");
+            if (sheetOverlap < 0)
+                throw new Exception("Sheet overlap must be zero or positive.");
+            if (sheetWidth <= sheetOverlap)
+                throw new Exception("Sheet width must be greater than sheet overlap.");
+            if (ridgeGap < 0)
+                throw new Exception("Ridge gap must be zero or positive.");
 
             var roofTypeIndex = RoofTypeComboBox.SelectedIndex;
             var overridesEnabled = FaceOverridesCheckBox.IsChecked == true;
