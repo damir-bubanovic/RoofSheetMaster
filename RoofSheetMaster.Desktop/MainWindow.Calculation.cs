@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using RoofSheetMaster.Core;
+using RoofSheetMaster.Desktop.Views;
+
 
 namespace RoofSheetMaster.Desktop;
 
@@ -243,9 +245,10 @@ public partial class MainWindow
             _lastFlashings = flashings;
 
             // bind UI lists
-            PanelListBox.ItemsSource = materials.Panels;
-            SheetSummaryListBox.ItemsSource = materials.SheetSummaries;
-            FlashingListBox.ItemsSource = _lastFlashings;
+            MaterialsViewControl.PanelsListBoxControl.ItemsSource = materials.Panels;
+            MaterialsViewControl.SheetSummaryListBoxControl.ItemsSource = materials.SheetSummaries;
+            MaterialsViewControl.FlashingListBoxControl.ItemsSource = flashings;
+
 
             ResultSummaryTextBlock.Text =
                 $"Total sheets: {materials.TotalSheets} {summarySuffix} [{unitsDescription}]";
@@ -258,9 +261,9 @@ public partial class MainWindow
             _lastFlashings = null;
 
             ResultSummaryTextBlock.Text = $"Error: {ex.Message}";
-            PanelListBox.ItemsSource = Array.Empty<object>();
-            SheetSummaryListBox.ItemsSource = Array.Empty<object>();
-            FlashingListBox.ItemsSource = Array.Empty<object>();
+            MaterialsViewControl.PanelsListBoxControl.ItemsSource = Array.Empty<object>();
+            MaterialsViewControl.SheetSummaryListBoxControl.ItemsSource = Array.Empty<object>();
+            MaterialsViewControl.FlashingListBoxControl.ItemsSource = Array.Empty<object>();
             DiagramCanvas.Children.Clear();
         }
     }
