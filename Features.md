@@ -111,7 +111,6 @@ This roadmap is split into **Completed** and **To-Do** chapters so it is easy to
 
 ---
 
-## 🕒 To-Do Chapters
 
 ### Chapter 8 — Multiple Roof Sections
 
@@ -129,6 +128,8 @@ This roadmap is split into **Completed** and **To-Do** chapters so it is easy to
 - Basic screw/fastener estimates
 
 ---
+
+## 🕒 To-Do Chapters
 
 ### Chapter 10 — Exporting & Reports
 

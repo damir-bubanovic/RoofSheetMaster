@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using RoofSheetMaster.Core;
@@ -8,14 +9,8 @@ namespace RoofSheetMaster.Desktop;
 public partial class MainWindow
 {
     private MaterialList? _lastMaterials;
+    private IReadOnlyList<FlashingSummary>? _lastFlashings;
 
-    /// <summary>
-    /// Read an optional override value.
-    /// If overrides are disabled, always returns defaultValue.
-    /// If overrides are enabled:
-    ///   - empty -> defaultValue
-    ///   - invalid text -> throws with a clear error.
-    /// </summary>
     private double GetOverrideOrDefault(
         TextBox textBox,
         double defaultValue,
@@ -36,10 +31,6 @@ public partial class MainWindow
         return value;
     }
 
-    /// <summary>
-    /// Round a value to the nearest multiple of increment.
-    /// If increment <= 0, returns the original value.
-    /// </summary>
     private static double RoundToIncrement(double value, double increment)
     {
         if (increment <= 0)
@@ -48,12 +39,8 @@ public partial class MainWindow
         return Math.Round(value / increment) * increment;
     }
 
-    /// <summary>
-    /// Get human-readable units description from the Units combo.
-    /// </summary>
     private string GetUnitsDescription()
     {
-        // 0 = Metric (m), 1 = Imperial (ft)
         var idx = UnitsComboBox.SelectedIndex;
         return idx == 0 ? "metric (m)" : "imperial (ft)";
     }
@@ -81,7 +68,6 @@ public partial class MainWindow
             if (!double.TryParse(RidgeGapTextBox.Text, out var ridgeGap))
                 throw new Exception("Invalid ridge gap.");
 
-            // Sheet length rounding
             double roundingIncrement = 0;
             var roundingRaw = SheetLengthRoundingTextBox.Text?.Trim();
             if (!string.IsNullOrEmpty(roundingRaw))
@@ -101,7 +87,6 @@ public partial class MainWindow
 
             if (roofTypeIndex == 0)
             {
-                // Single face
                 var input = new RoofInput
                 {
                     RoofLength = roofLength,
@@ -117,7 +102,6 @@ public partial class MainWindow
             }
             else if (roofTypeIndex == 1)
             {
-                // Gable roof (two faces, same dimensions)
                 var input = new RoofInput
                 {
                     RoofLength = roofLength,
@@ -133,27 +117,21 @@ public partial class MainWindow
             }
             else if (roofTypeIndex == 2)
             {
-                // Hip roof (4 faces, with optional per-face overrides)
-
-                // FrontLeft overrides
                 var flLength = GetOverrideOrDefault(
                     HipFrontLeftLengthTextBox, roofLength, "Hip FrontLeft length", overridesEnabled);
                 var flWidth = GetOverrideOrDefault(
                     HipFrontLeftWidthTextBox, roofWidth, "Hip FrontLeft width", overridesEnabled);
 
-                // FrontRight overrides
                 var frLength = GetOverrideOrDefault(
                     HipFrontRightLengthTextBox, roofLength, "Hip FrontRight length", overridesEnabled);
                 var frWidth = GetOverrideOrDefault(
                     HipFrontRightWidthTextBox, roofWidth, "Hip FrontRight width", overridesEnabled);
 
-                // BackLeft overrides
                 var blLength = GetOverrideOrDefault(
                     HipBackLeftLengthTextBox, roofLength, "Hip BackLeft length", overridesEnabled);
                 var blWidth = GetOverrideOrDefault(
                     HipBackLeftWidthTextBox, roofWidth, "Hip BackLeft width", overridesEnabled);
 
-                // BackRight overrides
                 var brLength = GetOverrideOrDefault(
                     HipBackRightLengthTextBox, roofLength, "Hip BackRight length", overridesEnabled);
                 var brWidth = GetOverrideOrDefault(
@@ -210,15 +188,11 @@ public partial class MainWindow
             }
             else
             {
-                // Valley roof (2 faces, with optional per-face overrides)
-
-                // Upper face overrides
                 var upperLength = GetOverrideOrDefault(
                     ValleyUpperLengthTextBox, roofLength, "Valley Upper length", overridesEnabled);
                 var upperWidth = GetOverrideOrDefault(
                     ValleyUpperWidthTextBox, roofWidth, "Valley Upper width", overridesEnabled);
 
-                // Lower face overrides
                 var lowerLength = GetOverrideOrDefault(
                     ValleyLowerLengthTextBox, roofLength, "Valley Lower length", overridesEnabled);
                 var lowerWidth = GetOverrideOrDefault(
@@ -254,34 +228,39 @@ public partial class MainWindow
                     : "(valley, 2 faces same for now)";
             }
 
-            // Apply sheet length rounding if requested.
+            // Rounding first, so flashings based on final lengths.
             if (roundingIncrement > 0)
             {
                 foreach (var panel in materials.Panels)
-                {
                     panel.SheetLength = RoundToIncrement(panel.SheetLength, roundingIncrement);
-                }
             }
 
-            // remember last materials for export / summary
+            // Calculate flashings / accessories from panels.
+            var flashings = FlashingCalculator.CalculateFlashings(materials);
+
+            // store for exports
             _lastMaterials = materials;
+            _lastFlashings = flashings;
 
             // bind UI lists
             PanelListBox.ItemsSource = materials.Panels;
             SheetSummaryListBox.ItemsSource = materials.SheetSummaries;
+            FlashingListBox.ItemsSource = _lastFlashings;
 
             ResultSummaryTextBlock.Text =
                 $"Total sheets: {materials.TotalSheets} {summarySuffix} [{unitsDescription}]";
 
-            // Draw diagram from panels
             RenderDiagram(materials.Panels);
         }
         catch (Exception ex)
         {
             _lastMaterials = null;
+            _lastFlashings = null;
+
             ResultSummaryTextBlock.Text = $"Error: {ex.Message}";
             PanelListBox.ItemsSource = Array.Empty<object>();
             SheetSummaryListBox.ItemsSource = Array.Empty<object>();
+            FlashingListBox.ItemsSource = Array.Empty<object>();
             DiagramCanvas.Children.Clear();
         }
     }

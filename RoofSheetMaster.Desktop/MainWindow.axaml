@@ -5,391 +5,425 @@
         Width="1200" Height="700"
         Title="RoofSheetMaster - Single / Gable / Hip / Valley">
 
-  <Grid Margin="4" ColumnDefinitions="420,*" RowDefinitions="*">
+  <!-- ROOT LAYOUT: menu on top, main content below -->
+  <Grid Margin="4" RowDefinitions="Auto,*">
 
-    <!-- LEFT COLUMN (scrollable) -->
-    <Grid Grid.Column="0" Margin="6">
-      <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid RowDefinitions="Auto,*">
+    <!-- TOP MENU -->
+    <Menu Grid.Row="0">
+      <MenuItem Header="_File">
+        <MenuItem Header="Export _Sheets CSV"
+                  Click="OnExportSheetSummaryCsvClick" />
+        <MenuItem Header="Export _Panels CSV"
+                  Click="OnExportPanelsCsvClick" />
+        <MenuItem Header="Export _Flashings CSV"
+                  Click="OnExportFlashingsCsvClick" />
+        <!-- Save / Load can be added here in Chapter 10 -->
+      </MenuItem>
+    </Menu>
 
-          <!-- Roof inputs (top) -->
-          <Border Grid.Row="0"
-                  Padding="10"
-                  Margin="0,0,0,10"
-                  BorderThickness="1"
-                  BorderBrush="#FF3A6EA5"
-                  Background="#FFEFF7FF">
-            <StackPanel>
-              <TextBlock Text="Roof inputs"
-                         FontWeight="Bold"
-                         Margin="0,0,0,8"
-                         Foreground="#FF1F4F7A"/>
+    <!-- MAIN CONTENT: two columns -->
+    <Grid Grid.Row="1" ColumnDefinitions="420,*" RowDefinitions="*">
 
-              <!-- labels left, fields right; right margin keeps away from border -->
-              <Grid ColumnDefinitions="Auto,*"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
-                    Margin="0,0,10,0">
+      <!-- LEFT COLUMN (scrollable) -->
+      <Grid Grid.Column="0" Margin="6">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+          <Grid RowDefinitions="Auto,*">
 
-                <!-- Units -->
-                <TextBlock Grid.Row="0" Grid.Column="0"
-                           Text="Units"
-                           VerticalAlignment="Center"
-                           Margin="0,0,5,0" />
-                <ComboBox x:Name="UnitsComboBox"
-                          Grid.Row="0" Grid.Column="1"
-                          MinWidth="120"
-                          HorizontalAlignment="Stretch"
-                          SelectedIndex="1"
-                          Margin="0,4,0,0">
-                  <ComboBoxItem Content="Metric (m)" />
-                  <ComboBoxItem Content="Imperial (ft)" />
-                </ComboBox>
-
-                <TextBlock Grid.Row="1" Grid.Column="0"
-                           Text="Roof type"
-                           VerticalAlignment="Center"
-                           Margin="0,0,5,0" />
-                <ComboBox x:Name="RoofTypeComboBox"
-                          Grid.Row="1" Grid.Column="1"
-                          MinWidth="120"
-                          HorizontalAlignment="Stretch"
-                          SelectedIndex="0"
-                          Margin="0,4,0,0">
-                  <ComboBoxItem Content="Single face" />
-                  <ComboBoxItem Content="Gable roof" />
-                  <ComboBoxItem Content="Hip roof (4 faces same)" />
-                  <ComboBoxItem Content="Valley roof (2 faces same)" />
-                </ComboBox>
-
-                <TextBlock Grid.Row="2" Grid.Column="0"
-                           Text="Roof length (along eave)"
-                           Margin="0,5,5,0" />
-                <TextBox x:Name="RoofLengthTextBox"
-                         Grid.Row="2" Grid.Column="1"
-                         MinWidth="120"
-                         HorizontalAlignment="Stretch"
-                         Text="40" Margin="0,5,0,0"/>
-
-                <TextBlock Grid.Row="3" Grid.Column="0"
-                           Text="Roof width (eave to ridge, horizontal)"
-                           Margin="0,5,5,0" />
-                <TextBox x:Name="RoofWidthTextBox"
-                         Grid.Row="3" Grid.Column="1"
-                         MinWidth="120"
-                         HorizontalAlignment="Stretch"
-                         Text="15" Margin="0,5,0,0"/>
-
-                <TextBlock Grid.Row="4" Grid.Column="0"
-                           Text="Roof angle (degrees)"
-                           Margin="0,5,5,0" />
-                <TextBox x:Name="RoofAngleTextBox"
-                         Grid.Row="4" Grid.Column="1"
-                         MinWidth="120"
-                         HorizontalAlignment="Stretch"
-                         Text="26.565" Margin="0,5,0,0"/>
-
-                <TextBlock Grid.Row="5" Grid.Column="0"
-                           Text="Sheet width"
-                           Margin="0,5,5,0" />
-                <TextBox x:Name="SheetWidthTextBox"
-                         Grid.Row="5" Grid.Column="1"
-                         MinWidth="120"
-                         HorizontalAlignment="Stretch"
-                         Text="3" Margin="0,5,0,0"/>
-
-                <TextBlock Grid.Row="6" Grid.Column="0"
-                           Text="Sheet overlap"
-                           Margin="0,5,5,0" />
-                <TextBox x:Name="SheetOverlapTextBox"
-                         Grid.Row="6" Grid.Column="1"
-                         MinWidth="120"
-                         HorizontalAlignment="Stretch"
-                         Text="0.125" Margin="0,5,0,0"/>
-
-                <TextBlock Grid.Row="7" Grid.Column="0"
-                           Text="Ridge gap"
-                           Margin="0,5,5,0" />
-                <TextBox x:Name="RidgeGapTextBox"
-                         Grid.Row="7" Grid.Column="1"
-                         MinWidth="120"
-                         HorizontalAlignment="Stretch"
-                         Text="0" Margin="0,5,0,0"/>
-
-                <!-- Sheet length rounding -->
-                <TextBlock Grid.Row="8" Grid.Column="0"
-                           Text="Sheet length rounding"
-                           Margin="0,5,5,0" />
-                <TextBox x:Name="SheetLengthRoundingTextBox"
-                         Grid.Row="8" Grid.Column="1"
-                         MinWidth="120"
-                         HorizontalAlignment="Stretch"
-                         Text="0"
-                         ToolTip.Tip="0 = no rounding. Example: 0.125 for 1/8, 0.01 for 1 cm or 0.01 m."
-                         Margin="0,5,0,0"/>
-
-                <Button x:Name="CalculateButton"
-                        Grid.Row="9" Grid.Column="0"
-                        Content="Calculate"
-                        Width="120"
-                        Margin="0,10,5,0"
-                        Click="OnCalculateClick" />
-
-                <TextBlock x:Name="ResultSummaryTextBlock"
-                           Grid.Row="9" Grid.Column="1"
-                           Margin="0,10,0,0"
+            <!-- Roof inputs (top) -->
+            <Border Grid.Row="0"
+                    Padding="10"
+                    Margin="0,0,0,10"
+                    BorderThickness="1"
+                    BorderBrush="#FF3A6EA5"
+                    Background="#FFEFF7FF">
+              <StackPanel>
+                <TextBlock Text="Roof inputs"
                            FontWeight="Bold"
-                           TextWrapping="Wrap"
+                           Margin="0,0,0,8"
                            Foreground="#FF1F4F7A"/>
-              </Grid>
 
-              <!-- Per-face overrides toggle -->
-              <CheckBox x:Name="FaceOverridesCheckBox"
-                        Content="Enable per-face overrides (hip / valley only)"
-                        Margin="0,12,0,4"
-                        IsChecked="False"
-                        Checked="OnFaceOverridesToggle"
-                        Unchecked="OnFaceOverridesToggle" />
+                <!-- labels left, fields right; right margin keeps away from border -->
+                <Grid ColumnDefinitions="Auto,*"
+                      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                      Margin="0,0,10,0">
 
-              <!-- Per-face overrides (collapsible) -->
-              <StackPanel x:Name="FaceOverridesPanel"
-                          IsVisible="False">
-
-                <TextBlock Text="Leave blank to use the main roof length/width above."
-                           Margin="0,0,0,6"
-                           FontSize="11"
-                           Foreground="#FF555555" />
-
-                <!-- Hip + Valley face overrides: length / width -->
-                <Grid ColumnDefinitions="Auto,*,*"
-                      RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
-
-                  <!-- Hip faces -->
+                  <!-- Units -->
                   <TextBlock Grid.Row="0" Grid.Column="0"
-                             Text="Hip FrontLeft"
-                             Margin="0,2,5,0" />
-                  <TextBox x:Name="HipFrontLeftLengthTextBox"
-                           Grid.Row="0" Grid.Column="1"
-                           Margin="0,2,5,0"
-                           Watermark="Length" />
-                  <TextBox x:Name="HipFrontLeftWidthTextBox"
-                           Grid.Row="0" Grid.Column="2"
-                           Margin="0,2,0,0"
-                           Watermark="Width" />
+                             Text="Units"
+                             VerticalAlignment="Center"
+                             Margin="0,0,5,0" />
+                  <ComboBox x:Name="UnitsComboBox"
+                            Grid.Row="0" Grid.Column="1"
+                            MinWidth="120"
+                            HorizontalAlignment="Stretch"
+                            SelectedIndex="1"
+                            Margin="0,4,0,0">
+                    <ComboBoxItem Content="Metric (m)" />
+                    <ComboBoxItem Content="Imperial (ft)" />
+                  </ComboBox>
 
                   <TextBlock Grid.Row="1" Grid.Column="0"
-                             Text="Hip FrontRight"
-                             Margin="0,2,5,0" />
-                  <TextBox x:Name="HipFrontRightLengthTextBox"
-                           Grid.Row="1" Grid.Column="1"
-                           Margin="0,2,5,0"
-                           Watermark="Length" />
-                  <TextBox x:Name="HipFrontRightWidthTextBox"
-                           Grid.Row="1" Grid.Column="2"
-                           Margin="0,2,0,0"
-                           Watermark="Width" />
+                             Text="Roof type"
+                             VerticalAlignment="Center"
+                             Margin="0,0,5,0" />
+                  <ComboBox x:Name="RoofTypeComboBox"
+                            Grid.Row="1" Grid.Column="1"
+                            MinWidth="120"
+                            HorizontalAlignment="Stretch"
+                            SelectedIndex="0"
+                            Margin="0,4,0,0">
+                    <ComboBoxItem Content="Single face" />
+                    <ComboBoxItem Content="Gable roof" />
+                    <ComboBoxItem Content="Hip roof (4 faces same)" />
+                    <ComboBoxItem Content="Valley roof (2 faces same)" />
+                  </ComboBox>
 
                   <TextBlock Grid.Row="2" Grid.Column="0"
-                             Text="Hip BackLeft"
-                             Margin="0,2,5,0" />
-                  <TextBox x:Name="HipBackLeftLengthTextBox"
+                             Text="Roof length (along eave)"
+                             Margin="0,5,5,0" />
+                  <TextBox x:Name="RoofLengthTextBox"
                            Grid.Row="2" Grid.Column="1"
-                           Margin="0,2,5,0"
-                           Watermark="Length" />
-                  <TextBox x:Name="HipBackLeftWidthTextBox"
-                           Grid.Row="2" Grid.Column="2"
-                           Margin="0,2,0,0"
-                           Watermark="Width" />
+                           MinWidth="120"
+                           HorizontalAlignment="Stretch"
+                           Text="40" Margin="0,5,0,0"/>
 
                   <TextBlock Grid.Row="3" Grid.Column="0"
-                             Text="Hip BackRight"
-                             Margin="0,2,5,0" />
-                  <TextBox x:Name="HipBackRightLengthTextBox"
+                             Text="Roof width (eave to ridge, horizontal)"
+                             Margin="0,5,5,0" />
+                  <TextBox x:Name="RoofWidthTextBox"
                            Grid.Row="3" Grid.Column="1"
-                           Margin="0,2,5,0"
-                           Watermark="Length" />
-                  <TextBox x:Name="HipBackRightWidthTextBox"
-                           Grid.Row="3" Grid.Column="2"
-                           Margin="0,2,0,0"
-                           Watermark="Width" />
+                           MinWidth="120"
+                           HorizontalAlignment="Stretch"
+                           Text="15" Margin="0,5,0,0"/>
 
-                  <!-- Valley faces -->
                   <TextBlock Grid.Row="4" Grid.Column="0"
-                             Text="Valley Upper"
-                             Margin="0,8,5,0" />
-                  <TextBox x:Name="ValleyUpperLengthTextBox"
+                             Text="Roof angle (degrees)"
+                             Margin="0,5,5,0" />
+                  <TextBox x:Name="RoofAngleTextBox"
                            Grid.Row="4" Grid.Column="1"
-                           Margin="0,8,5,0"
-                           Watermark="Length" />
-                  <TextBox x:Name="ValleyUpperWidthTextBox"
-                           Grid.Row="4" Grid.Column="2"
-                           Margin="0,8,0,0"
-                           Watermark="Width" />
+                           MinWidth="120"
+                           HorizontalAlignment="Stretch"
+                           Text="26.565" Margin="0,5,0,0"/>
 
                   <TextBlock Grid.Row="5" Grid.Column="0"
-                             Text="Valley Lower"
-                             Margin="0,2,5,0" />
-                  <TextBox x:Name="ValleyLowerLengthTextBox"
+                             Text="Sheet width"
+                             Margin="0,5,5,0" />
+                  <TextBox x:Name="SheetWidthTextBox"
                            Grid.Row="5" Grid.Column="1"
-                           Margin="0,2,5,0"
-                           Watermark="Length" />
-                  <TextBox x:Name="ValleyLowerWidthTextBox"
-                           Grid.Row="5" Grid.Column="2"
-                           Margin="0,2,0,0"
-                           Watermark="Width" />
+                           MinWidth="120"
+                           HorizontalAlignment="Stretch"
+                           Text="3" Margin="0,5,0,0"/>
 
+                  <TextBlock Grid.Row="6" Grid.Column="0"
+                             Text="Sheet overlap"
+                             Margin="0,5,5,0" />
+                  <TextBox x:Name="SheetOverlapTextBox"
+                           Grid.Row="6" Grid.Column="1"
+                           MinWidth="120"
+                           HorizontalAlignment="Stretch"
+                           Text="0.125" Margin="0,5,0,0"/>
+
+                  <TextBlock Grid.Row="7" Grid.Column="0"
+                             Text="Ridge gap"
+                             Margin="0,5,5,0" />
+                  <TextBox x:Name="RidgeGapTextBox"
+                           Grid.Row="7" Grid.Column="1"
+                           MinWidth="120"
+                           HorizontalAlignment="Stretch"
+                           Text="0" Margin="0,5,0,0"/>
+
+                  <!-- Sheet length rounding -->
+                  <TextBlock Grid.Row="8" Grid.Column="0"
+                             Text="Sheet length rounding"
+                             Margin="0,5,5,0" />
+                  <TextBox x:Name="SheetLengthRoundingTextBox"
+                           Grid.Row="8" Grid.Column="1"
+                           MinWidth="120"
+                           HorizontalAlignment="Stretch"
+                           Text="0"
+                           ToolTip.Tip="0 = no rounding. Example: 0.125 for 1/8, 0.01 for 1 cm or 0.01 m."
+                           Margin="0,5,0,0"/>
+
+                  <Button x:Name="CalculateButton"
+                          Grid.Row="9" Grid.Column="0"
+                          Content="Calculate"
+                          Width="120"
+                          Margin="0,10,5,0"
+                          Click="OnCalculateClick" />
+
+                  <TextBlock x:Name="ResultSummaryTextBlock"
+                             Grid.Row="9" Grid.Column="1"
+                             Margin="0,10,0,0"
+                             FontWeight="Bold"
+                             TextWrapping="Wrap"
+                             Foreground="#FF1F4F7A"/>
                 </Grid>
+
+                <!-- Per-face overrides toggle -->
+                <CheckBox x:Name="FaceOverridesCheckBox"
+                          Content="Enable per-face overrides (hip / valley only)"
+                          Margin="0,12,0,4"
+                          IsChecked="False"
+                          Checked="OnFaceOverridesToggle"
+                          Unchecked="OnFaceOverridesToggle" />
+
+                <!-- Per-face overrides (collapsible) -->
+                <StackPanel x:Name="FaceOverridesPanel"
+                            IsVisible="False">
+
+                  <TextBlock Text="Leave blank to use the main roof length/width above."
+                             Margin="0,0,0,6"
+                             FontSize="11"
+                             Foreground="#FF555555" />
+
+                  <!-- Hip + Valley face overrides: length / width -->
+                  <Grid ColumnDefinitions="Auto,*,*"
+                        RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+
+                    <!-- Hip faces -->
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               Text="Hip FrontLeft"
+                               Margin="0,2,5,0" />
+                    <TextBox x:Name="HipFrontLeftLengthTextBox"
+                             Grid.Row="0" Grid.Column="1"
+                             Margin="0,2,5,0"
+                             Watermark="Length" />
+                    <TextBox x:Name="HipFrontLeftWidthTextBox"
+                             Grid.Row="0" Grid.Column="2"
+                             Margin="0,2,0,0"
+                             Watermark="Width" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0"
+                               Text="Hip FrontRight"
+                               Margin="0,2,5,0" />
+                    <TextBox x:Name="HipFrontRightLengthTextBox"
+                             Grid.Row="1" Grid.Column="1"
+                             Margin="0,2,5,0"
+                             Watermark="Length" />
+                    <TextBox x:Name="HipFrontRightWidthTextBox"
+                             Grid.Row="1" Grid.Column="2"
+                             Margin="0,2,0,0"
+                             Watermark="Width" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0"
+                               Text="Hip BackLeft"
+                               Margin="0,2,5,0" />
+                    <TextBox x:Name="HipBackLeftLengthTextBox"
+                             Grid.Row="2" Grid.Column="1"
+                             Margin="0,2,5,0"
+                             Watermark="Length" />
+                    <TextBox x:Name="HipBackLeftWidthTextBox"
+                             Grid.Row="2" Grid.Column="2"
+                             Margin="0,2,0,0"
+                             Watermark="Width" />
+
+                    <TextBlock Grid.Row="3" Grid.Column="0"
+                               Text="Hip BackRight"
+                               Margin="0,2,5,0" />
+                    <TextBox x:Name="HipBackRightLengthTextBox"
+                             Grid.Row="3" Grid.Column="1"
+                             Margin="0,2,5,0"
+                             Watermark="Length" />
+                    <TextBox x:Name="HipBackRightWidthTextBox"
+                             Grid.Row="3" Grid.Column="2"
+                             Margin="0,2,0,0"
+                             Watermark="Width" />
+
+                    <!-- Valley faces -->
+                    <TextBlock Grid.Row="4" Grid.Column="0"
+                               Text="Valley Upper"
+                               Margin="0,8,5,0" />
+                    <TextBox x:Name="ValleyUpperLengthTextBox"
+                             Grid.Row="4" Grid.Column="1"
+                             Margin="0,8,5,0"
+                             Watermark="Length" />
+                    <TextBox x:Name="ValleyUpperWidthTextBox"
+                             Grid.Row="4" Grid.Column="2"
+                             Margin="0,8,0,0"
+                             Watermark="Width" />
+
+                    <TextBlock Grid.Row="5" Grid.Column="0"
+                               Text="Valley Lower"
+                               Margin="0,2,5,0" />
+                    <TextBox x:Name="ValleyLowerLengthTextBox"
+                             Grid.Row="5" Grid.Column="1"
+                             Margin="0,2,5,0"
+                             Watermark="Length" />
+                    <TextBox x:Name="ValleyLowerWidthTextBox"
+                             Grid.Row="5" Grid.Column="2"
+                             Margin="0,2,0,0"
+                             Watermark="Width" />
+
+                  </Grid>
+                </StackPanel>
               </StackPanel>
-            </StackPanel>
-          </Border>
+            </Border>
 
-          <!-- Panels (bottom) -->
-          <Border Grid.Row="1"
-                  Padding="10,10,20,10"
-                  Margin="0,0,0,0"
-                  BorderThickness="1"
-                  BorderBrush="#FFB0B0B0"
-                  Background="#FFF5F5F5">
-            <!--
-              Row 0: header
-              Row 1: panel list
-              Row 2: sheet summary header
-              Row 3: sheet summary list
-              Row 4: export buttons at bottom-right
-            -->
-            <Grid RowDefinitions="Auto,*,Auto,Auto,Auto">
+            <!-- Panels (bottom) -->
+            <Border Grid.Row="1"
+                    Padding="10,10,20,10"
+                    Margin="0,0,0,0"
+                    BorderThickness="1"
+                    BorderBrush="#FFB0B0B0"
+                    Background="#FFF5F5F5">
 
-              <!-- Header -->
-              <TextBlock Grid.Row="0"
-                         Text="Panels / material list"
-                         FontWeight="Bold"
-                         Margin="0,0,0,5"
-                         Foreground="#FF333333"/>
+              <!--
+                Row 0: header
+                Row 1: panel list
+                Row 2: sheet summary header
+                Row 3: sheet summary list
+                Row 4: flashings header
+                Row 5: flashings list
+              -->
+              <Grid RowDefinitions="Auto,*,Auto,Auto,Auto,Auto">
 
-              <!-- Full panel list -->
-              <ScrollViewer Grid.Row="1"
-                            VerticalScrollBarVisibility="Auto"
-                            HorizontalScrollBarVisibility="Auto">
-                <ListBox x:Name="PanelListBox">
-                  <ListBox.ItemTemplate>
-                    <DataTemplate x:DataType="core:Panel">
-                      <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
-                        <Run Text="{Binding Face}" />
-                        <Run Text="  " />
-                        <Run Text="Panel " />
-                        <Run Text="{Binding Index}" />
-                        <Run Text=" | eavePos=" />
-                        <Run Text="{Binding EavePosition, StringFormat='{}{0:F3}'}" />
-                        <Run Text=" | cover=" />
-                        <Run Text="{Binding EffectiveWidth, StringFormat='{}{0:F3}'}" />
-                        <Run Text="&#x0a;length=" />
-                        <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
-                      </TextBlock>
-                    </DataTemplate>
-                  </ListBox.ItemTemplate>
-                </ListBox>
-              </ScrollViewer>
+                <!-- Header -->
+                <TextBlock Grid.Row="0"
+                           Text="Panels / material list"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"
+                           Foreground="#FF333333"/>
 
-              <!-- Sheet summary header -->
-              <TextBlock Grid.Row="2"
-                         Text="Sheet summary (grouped by length)"
-                         FontWeight="Bold"
-                         Margin="0,10,0,5"
-                         Foreground="#FF333333" />
+                <!-- Full panel list -->
+                <ScrollViewer Grid.Row="1"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto">
+                  <ListBox x:Name="PanelListBox">
+                    <ListBox.ItemTemplate>
+                      <DataTemplate x:DataType="core:Panel">
+                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
+                          <Run Text="{Binding Face}" />
+                          <Run Text="  " />
+                          <Run Text="Panel " />
+                          <Run Text="{Binding Index}" />
+                          <Run Text=" | eavePos=" />
+                          <Run Text="{Binding EavePosition, StringFormat='{}{0:F3}'}" />
+                          <Run Text=" | cover=" />
+                          <Run Text="{Binding EffectiveWidth, StringFormat='{}{0:F3}'}" />
+                          <Run Text="&#x0a;length=" />
+                          <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
+                        </TextBlock>
+                      </DataTemplate>
+                    </ListBox.ItemTemplate>
+                  </ListBox>
+                </ScrollViewer>
 
-              <!-- Sheet summary list -->
-              <ScrollViewer Grid.Row="3"
-                            VerticalScrollBarVisibility="Auto"
-                            HorizontalScrollBarVisibility="Auto">
-                <ListBox x:Name="SheetSummaryListBox">
-                  <ListBox.ItemTemplate>
-                    <DataTemplate x:DataType="core:SheetSummary">
-                      <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
-                        <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
-                        <Run Text=" length × " />
-                        <Run Text="{Binding Count}" />
-                        <Run Text=" pcs" />
-                      </TextBlock>
-                    </DataTemplate>
-                  </ListBox.ItemTemplate>
-                </ListBox>
-              </ScrollViewer>
+                <!-- Sheet summary header -->
+                <TextBlock Grid.Row="2"
+                           Text="Sheet summary (grouped by length)"
+                           FontWeight="Bold"
+                           Margin="0,10,0,5"
+                           Foreground="#FF333333" />
 
-              <!-- Export buttons at bottom -->
-              <StackPanel Grid.Row="4"
-                          Orientation="Horizontal"
-                          HorizontalAlignment="Right"
-                          Margin="0,10,0,0">
-                <Button Content="Export sheets CSV"
-                        Margin="0,0,5,0"
-                        Click="OnExportSheetSummaryCsvClick" />
-                <Button Content="Export panels CSV"
-                        Click="OnExportPanelsCsvClick" />
-              </StackPanel>
+                <!-- Sheet summary list -->
+                <ScrollViewer Grid.Row="3"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto">
+                  <ListBox x:Name="SheetSummaryListBox">
+                    <ListBox.ItemTemplate>
+                      <DataTemplate x:DataType="core:SheetSummary">
+                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
+                          <Run Text="{Binding SheetLength, StringFormat='{}{0:F3}'}" />
+                          <Run Text=" length × " />
+                          <Run Text="{Binding Count}" />
+                          <Run Text=" pcs" />
+                        </TextBlock>
+                      </DataTemplate>
+                    </ListBox.ItemTemplate>
+                  </ListBox>
+                </ScrollViewer>
 
-            </Grid>
-          </Border>
+                <!-- Flashings / accessories header -->
+                <TextBlock Grid.Row="4"
+                           Text="Flashings / accessories"
+                           FontWeight="Bold"
+                           Margin="0,10,0,5"
+                           Foreground="#FF333333" />
 
-        </Grid>
-      </ScrollViewer>
-    </Grid>
+                <!-- Flashings / accessories list -->
+                <ScrollViewer Grid.Row="5"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto">
+                  <ListBox x:Name="FlashingListBox">
+                    <ListBox.ItemTemplate>
+                      <DataTemplate x:DataType="core:FlashingSummary">
+                        <TextBlock TextWrapping="Wrap" Margin="0,0,0,4">
+                          <Run Text="{Binding Name}" />
+                          <Run Text=" – " />
+                          <Run Text="{Binding TotalLength, StringFormat='length {0:F3}'}" />
+                          <Run Text=", " />
+                          <Run Text="{Binding Count, StringFormat='count {0}'}" />
+                          <Run Text=" " />
+                          <Run Text="{Binding Notes}" />
+                        </TextBlock>
+                      </DataTemplate>
+                    </ListBox.ItemTemplate>
+                  </ListBox>
+                </ScrollViewer>
 
-    <!-- RIGHT COLUMN: diagram with zoom + scroll -->
-    <Border Grid.Column="1"
-            Margin="6"
-            Padding="10,10,20,10"
-            BorderThickness="1"
-            BorderBrush="#FF3A6EA5"
-            Background="#FFFFFFFF">
-      <Grid RowDefinitions="Auto,*,Auto">
+              </Grid>
+            </Border>
 
-        <!-- Header + zoom controls -->
-        <StackPanel Grid.Row="0"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Center">
-          <TextBlock Text="Roof layout (diagram)"
-                     FontWeight="Bold"
-                     Margin="0,0,0,8"
-                     Foreground="#FF1F4F7A"/>
-
-          <TextBlock Text="Zoom:"
-                     Margin="20,0,4,0"
-                     VerticalAlignment="Center" />
-
-          <Slider x:Name="ZoomSlider"
-                  Minimum="0.5"
-                  Maximum="3"
-                  Value="1"
-                  Width="150"
-                  TickFrequency="0.25"
-                  IsSnapToTickEnabled="True"
-                  ValueChanged="OnZoomSliderValueChanged"
-                  VerticalAlignment="Center" />
-
-          <TextBlock Margin="6,0,0,0"
-                     VerticalAlignment="Center"
-                     Text="{Binding #ZoomSlider.Value, StringFormat='{}{0:0.0}×'}" />
-        </StackPanel>
-
-        <!-- Scrollable diagram surface -->
-        <ScrollViewer Grid.Row="1"
-                      HorizontalScrollBarVisibility="Auto"
-                      VerticalScrollBarVisibility="Auto">
-          <Canvas x:Name="DiagramCanvas"
-                  Background="#FFF8F8F8"
-                  MinWidth="600"
-                  MinHeight="400" />
+          </Grid>
         </ScrollViewer>
-
-        <!-- Small hint text -->
-        <TextBlock Grid.Row="2"
-                   Margin="0,6,0,0"
-                   FontSize="11"
-                   Foreground="#FF666666"
-                   Text="Use zoom to inspect panel layout. Scrollbars appear when zoomed in."/>
       </Grid>
-    </Border>
 
+      <!-- RIGHT COLUMN: diagram with zoom + scroll -->
+      <Border Grid.Column="1"
+              Margin="6"
+              Padding="10,10,20,10"
+              BorderThickness="1"
+              BorderBrush="#FF3A6EA5"
+              Background="#FFFFFFFF">
+        <Grid RowDefinitions="Auto,*,Auto">
 
+          <!-- Header + zoom controls -->
+          <StackPanel Grid.Row="0"
+                      Orientation="Horizontal"
+                      VerticalAlignment="Center">
+            <TextBlock Text="Roof layout (diagram)"
+                       FontWeight="Bold"
+                       Margin="0,0,0,8"
+                       Foreground="#FF1F4F7A"/>
 
+            <TextBlock Text="Zoom:"
+                       Margin="20,0,4,0"
+                       VerticalAlignment="Center" />
+
+            <Slider x:Name="ZoomSlider"
+                    Minimum="0.5"
+                    Maximum="3"
+                    Value="1"
+                    Width="150"
+                    TickFrequency="0.25"
+                    IsSnapToTickEnabled="True"
+                    ValueChanged="OnZoomSliderValueChanged"
+                    VerticalAlignment="Center" />
+
+            <TextBlock Margin="6,0,0,0"
+                       VerticalAlignment="Center"
+                       Text="{Binding #ZoomSlider.Value, StringFormat='{}{0:0.0}×'}" />
+          </StackPanel>
+
+          <!-- Scrollable diagram surface -->
+          <ScrollViewer Grid.Row="1"
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Auto">
+            <Canvas x:Name="DiagramCanvas"
+                    Background="#FFF8F8F8"
+                    MinWidth="600"
+                    MinHeight="400" />
+          </ScrollViewer>
+
+          <!-- Small hint text -->
+          <TextBlock Grid.Row="2"
+                     Margin="0,6,0,0"
+                     FontSize="11"
+                     Foreground="#FF666666"
+                     Text="Use zoom to inspect panel layout. Scrollbars appear when zoomed in."/>
+        </Grid>
+      </Border>
+
+    </Grid>
   </Grid>
 </Window>
