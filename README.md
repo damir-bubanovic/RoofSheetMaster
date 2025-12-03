@@ -32,17 +32,6 @@ traditionally manual.
 -   ✔️ Export roof layout as PNG\
 -   ✔️ Save and load project files (`.rsmproj`)
 
-------------------------------------------------------------------------
-
-## Screenshot
-
-```{=html}
-<p align="center">
-```
-`<img src="Assets/screenshot.png" alt="RoofSheetMaster screenshot" width="800">`{=html}
-```{=html}
-</p>
-```
 
 ------------------------------------------------------------------------
 
