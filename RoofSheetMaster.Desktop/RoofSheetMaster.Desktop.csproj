@@ -22,4 +22,9 @@
   <ItemGroup>
     <ProjectReference Include="..\RoofSheetMaster.Core\RoofSheetMaster.Core.csproj" />
   </ItemGroup>
+
+  <!-- Avalonia resource assets (icons, images, etc.) -->
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
 </Project>
